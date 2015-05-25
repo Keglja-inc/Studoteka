@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/ime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="ime_korisnika" />
+
+    <EditText
+        android:id="@+id/prezime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="prezime_korisnika" />
+
+    <EditText
+        android:id="@+id/mailadress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="mailadresa" />
+
+  
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="lozinka_"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/password2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="potvrda_lozinke"
+        android:inputType="textPassword" />
+
+    <LinearLayout
+        android:id="@+id/gumobvi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:gravity="center" >
+
+        <Button
+            android:id="@+id/spremi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_spremi" />
+
+        <Button
+            android:id="@+id/odustanigumb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_odustani" />
+    </LinearLayout>
+
+</LinearLayout>

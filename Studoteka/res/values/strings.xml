@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Studoteka</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_closed">Close navigation drawer</string>
+    <string name="user_name">User name:</string>
+    <string name="password">Password:</string>
+    <string name="attempts">Attempts left:</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_signup">Sign\' up</string>
+    <string name="btn_spremi">"Spremi"</string>
+    <string name="btn_odustani">"Odustani"</string>
+    <string name="search_title">Search</string>
+    <string name="search_hint">Hint</string>
+    <string name="osobni_interesi">"Odabrani interesi"</string>
+
+    <string-array name="nav_drawer_items">
+        <item >What\'s trending</item>
+        <item >Find my collage</item>
+        <item >List of Collages</item>
+        <item >Profile</item>
+        <item >About us</item>
+        <item >Settings</item>
+        <item >Log out</item>
+    </string-array>
+    <string name="FACEBOOK_APP_ID">468681093287236</string>
+</resources>
