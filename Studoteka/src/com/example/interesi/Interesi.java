@@ -40,7 +40,7 @@ public class Interesi extends Fragment {
 	InteresiAdapter adapter;
 	Interes interes;
 	public CheckBox ck;
-	public static final String url ="http://stufacjoint.me/rest/13275cf47a74867fa3d5c02d7719e1ff28e011ba";
+	public static final String url ="http://46.101.185.15/rest/13275cf47a74867fa3d5c02d7719e1ff28e011ba";
 	final List<Interes> inter = new ArrayList<Interes>();
 	
 	private ArrayList<String> primljeno = new ArrayList<String>();

@@ -1,27 +1,33 @@
 package com.example.fakulteti;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.ls.LSInput;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Filterable;
+import android.widget.ListView;
 
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.adapters.ExpandableListAdapter;
 import com.example.listacheckbox.Model;
 import com.example.studoteka.R;
 import com.example.volley.AppController;
@@ -29,33 +35,86 @@ import com.example.volley.AppController;
 public class Fakulteti extends Fragment {
 	
 	private View view;
-	private ExpandableListAdapter ex_list_adapter;
-	private ExpandableListView ex_list_view;
-	private List<String> listDataHeader;
-	private HashMap<String, List<String>> listDataChild;
-	private Model model, model2;
+	private Model model;
+	private List<Model> fakulteti = new ArrayList<Model>();
+	private ArrayAdapter<Model> adapter;
+	private ListView lv;
+	private EditText inputSearch;
+	private SwipeRefreshLayout refreshLayout;
 
-	public static final String url ="http://stufacjoint.me/rest/27543538596b07668329373594a3baaf886420a4";
+	public static final String url ="http://46.101.185.15//rest/cfddc7067c795d46f676c358dc6aacfcd20c195c";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		view = inflater.inflate(R.layout.ex_lis_view, container, false);
-		ex_list_view = (ExpandableListView) view.findViewById(R.id.lvExp);
+		view = inflater.inflate(R.layout.fakulteti_fragment, container, false);
+		lv = (ListView) view.findViewById(android.R.id.list);
+		inputSearch = (EditText) view.findViewById(R.id.inputSearch);
+		refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+		refreshLayout.setColorSchemeResources(android.R.color.background_dark, android.R.color.holo_purple, 
+				android.R.color.holo_blue_bright, android.R.color.holo_green_light);
 		
-		prepareListData();
-		ex_list_adapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
-		ex_list_view.setAdapter(ex_list_adapter);
+		adapter = new ArrayAdapter<Model>(getActivity(), android.R.layout.simple_list_item_1, prepareListData());
+		lv.setAdapter(adapter);
 		
+		//rerfresh dela jedino ak je vidljiv prvi fakultet u listi jer bi inaèe refrešal kad god potegneš prema dolje
+		lv.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				if(firstVisibleItem == 0)
+					refreshLayout.setEnabled(true);
+				else
+					refreshLayout.setEnabled(false);
+			}
+		});
+		
+		//složeni refresh fakulteta
+		refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				// TODO Auto-generated method stub
+				prepareListData();
+			}
+		});
+		
+		//pretraživanje fakulteta
+		inputSearch.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				((Filterable) Fakulteti.this.adapter).getFilter().filter(s);
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		return view;
 	}
 	
-	private void prepareListData(){
-		listDataHeader = new ArrayList<String>();
-		listDataChild = new HashMap<String, List<String>>();
-		final List<String> test = new ArrayList<String>();
+	private List<Model> prepareListData(){
 		
 		JsonObjectRequest objRq = new JsonObjectRequest(Method.GET, url, null, new Response.Listener<JSONObject>() {
 
@@ -63,44 +122,23 @@ public class Fakulteti extends Fragment {
 			public void onResponse(JSONObject response) {
 				// TODO Auto-generated method stub
 				try {
-					
 					JSONArray jsArray = response.getJSONArray("podaci");
-					Log.d("podaci", jsArray.toString());
-					for(int i=0; i<jsArray.length(); i++){
+					Log.d("PODACI", jsArray.toString());
+					for(int i = 0; i<jsArray.length(); i++){
 						JSONObject jsObject = (JSONObject) jsArray.get(i);
-						String ucilista = jsObject.getString("uciliste");
-						//model = new Model(ucilista);
-						//model.setName(ucilista);
-						listDataHeader.add(ucilista);	
-						//ucilista šljaka
-						
-						JSONArray fakulteti = (JSONArray) jsObject.get("fakulteti");
-						test.clear();
-
-						for(int j=i; j<fakulteti.length();j++){
-							JSONObject naziv_faksa = (JSONObject) fakulteti.get(j);
-							String f = naziv_faksa.getString("naziv");
-						//	model2 = new Model(f);
-						//	model2.setName(f);
-							test.add(f);
-							//fakulteti šljakaju
-							listDataChild.put(listDataHeader.get(i),  test);
-							
+						String naziv = jsObject.getString("naziv");
+						model = new Model(naziv);
+						model.setName(naziv);
+						fakulteti.add(model);
+						Log.d("FAKULTETI", fakulteti.toString());
 						}
 						
-					}
-					
-					Log.d("UCILISTA", listDataHeader.toString());
-					Log.d("FAKULTETI", test.toString());
 				
-					
-					
-					
 				} catch (Exception e) {
 					// TODO: handle exception
 					e.printStackTrace();
 				}
-				ex_list_adapter.notifyDataSetChanged();
+				adapter.notifyDataSetChanged();
 			}
 		}, new ErrorListener() {
 
@@ -111,6 +149,6 @@ public class Fakulteti extends Fragment {
 			}
 		});
 		AppController.getInstance().addToRequestQueue(objRq);
+		return fakulteti;
 	}
-
 }
