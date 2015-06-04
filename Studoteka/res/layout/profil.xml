@@ -20,7 +20,8 @@
         android:layout_below="@+id/edt_korisnicko_ime"
         android:layout_marginTop="18dp"
         android:ems="10"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:background="@drawable/rounded_edit_text" />
 
     <TextView
         android:id="@+id/textView1"
@@ -29,7 +30,9 @@
         android:layout_alignBaseline="@+id/edt_korisnicko_ime"
         android:layout_alignBottom="@+id/edt_korisnicko_ime"
         android:layout_alignParentLeft="true"
-        android:text="Korisničko ime:" />
+        android:text="Korisničko ime:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+         />
 
     <TextView
         android:id="@+id/textView2"
@@ -38,7 +41,9 @@
         android:layout_alignBaseline="@+id/edt_email"
         android:layout_alignBottom="@+id/edt_email"
         android:layout_alignParentLeft="true"
-        android:text="E-mail:" />
+        android:text="E-mail:" 
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        />
 
     <EditText
         android:id="@+id/edt_korisnicko_ime"
@@ -47,6 +52,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/img_user"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:background="@drawable/rounded_edit_text" />
 
 </RelativeLayout>

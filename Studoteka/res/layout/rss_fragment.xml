@@ -9,7 +9,9 @@
         android:id="@+id/RssListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        ></ListView>
+        android:background="#B2DFDB">
+        
+    </ListView>
 
     <ProgressBar
         android:id="@+id/RssProgressBar"

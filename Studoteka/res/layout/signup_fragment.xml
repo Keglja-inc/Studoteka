@@ -8,19 +8,22 @@
         android:id="@+id/ime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="ime_korisnika" />
+        android:hint="ime_korisnika" 
+        android:background="@drawable/rounded_edit_text"/>
 
     <EditText
         android:id="@+id/prezime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="prezime_korisnika" />
+        android:hint="prezime_korisnika" 
+        android:background="@drawable/rounded_edit_text"/>
 
     <EditText
         android:id="@+id/mailadress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="mailadresa" />
+        android:hint="mailadresa" 
+        android:background="@drawable/rounded_edit_text"/>
 
   
 
@@ -29,14 +32,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="lozinka_"
-        android:inputType="textPassword" />
+        android:inputType="textPassword" 
+        android:background="@drawable/rounded_edit_text"/>
 
     <EditText
         android:id="@+id/password2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="potvrda_lozinke"
-        android:inputType="textPassword" />
+        android:inputType="textPassword" 
+        android:background="@drawable/rounded_edit_text"/>
 
     <LinearLayout
         android:id="@+id/gumobvi"
@@ -49,13 +54,16 @@
             android:id="@+id/spremi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_spremi" />
+            android:text="@string/btn_spremi"
+            android:background="@drawable/custom_button_design" />
 
         <Button
             android:id="@+id/odustanigumb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_odustani" />
+            android:text="@string/btn_odustani"
+            android:background="@drawable/custom_button_design" />
+        
     </LinearLayout>
 
 </LinearLayout>

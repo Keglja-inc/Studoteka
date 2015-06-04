@@ -15,7 +15,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="50dp"
         android:text="@string/user_name"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+         />
 
     <EditText
         android:id="@+id/edit_txt_user_name"
@@ -24,7 +25,8 @@
         android:layout_alignBottom="@+id/textView2"
         android:layout_marginLeft="32dp"
         android:layout_toRightOf="@+id/textView2"
-        android:ems="10" >
+        android:ems="10" 
+        android:background="@drawable/rounded_edit_text">
 
         <requestFocus />
     </EditText>
@@ -37,7 +39,8 @@
         android:layout_below="@+id/textView2"
         android:layout_marginTop="38dp"
         android:text="@string/password"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+         />
 
     <TextView
         android:id="@+id/textView4"
@@ -48,7 +51,8 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="48dp"
         android:text="@string/attempts"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+         />
 
     <Button
         android:id="@+id/login_button"
@@ -58,7 +62,8 @@
         android:layout_below="@+id/textView4"
         android:layout_marginTop="36dp"
         android:onClick="login"
-        android:text="@string/btn_login" />
+        android:text="@string/btn_login"
+        android:background="@drawable/custom_button_design" />
 
     <EditText
         android:id="@+id/edit_txt_password"
@@ -67,7 +72,8 @@
         android:layout_above="@+id/textView4"
         android:layout_alignLeft="@+id/edit_txt_user_name"
         android:ems="10"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:background="@drawable/rounded_edit_text" />
 
     <TextView
         android:id="@+id/textView5"
@@ -76,7 +82,8 @@
         android:layout_above="@+id/login_button"
         android:layout_marginLeft="34dp"
         android:layout_toRightOf="@+id/textView4"
-        android:text="TextView" />
+        android:text="TextView"
+         />
 
     <Button
         android:id="@+id/btn_signup"
@@ -85,8 +92,7 @@
         android:layout_alignBaseline="@+id/login_button"
         android:layout_alignBottom="@+id/login_button"
         android:layout_toRightOf="@+id/textView4"
-        android:text="@string/btn_signup" />
-
-    
+        android:text="@string/btn_signup"
+        android:background="@drawable/custom_button_design" />
     
 </RelativeLayout>

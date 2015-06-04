@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -43,6 +44,27 @@ public class GlavnaActivity extends ActionBarActivity implements OnItemClickList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		
+		
+		// Add code to print out the key hash
+	    try {
+	        PackageInfo info = getPackageManager().getPackageInfo(
+	                "com.example.studoteka", 
+	                PackageManager.GET_SIGNATURES);
+	        for (Signature signature : info.signatures) {
+	            MessageDigest md = MessageDigest.getInstance("SHA");
+	            md.update(signature.toByteArray());
+	            Log.d("KeyHashPRAVI:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+	            }
+	    } catch (NameNotFoundException e) {
+
+	    } catch (NoSuchAlgorithmException e) {
+
+	    }
+		
+		
+		
 		
 		drawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
 		nav_drawer_items=getResources().getStringArray(R.array.nav_drawer_items);
@@ -128,7 +150,7 @@ public class GlavnaActivity extends ActionBarActivity implements OnItemClickList
 		}
 		if(fragment != null){
 			FragmentManager frgManager = getFragmentManager();
-			frgManager.beginTransaction().replace(R.id.main_content, fragment).commit();
+			frgManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack(null).replace(R.id.main_content, fragment).commit();
 			
 			listView.setItemChecked(position, true);
 			listView.setSelection(position);
@@ -214,26 +236,7 @@ public class GlavnaActivity extends ActionBarActivity implements OnItemClickList
 
 		return key;
 	}	
-	
-	/*
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		
-		//Logs 'install' and 'app activate' Events
-		AppEventsLogger.activateApp(this);
-	}
-	
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		
-		//Logs 'app deactivate' Events
-		AppEventsLogger.deactivateApp(this);
-	}
-	*/
+
 }
 
 

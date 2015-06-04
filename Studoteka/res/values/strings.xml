@@ -3,6 +3,7 @@
 
     <string name="app_name">Studoteka</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_google_map">Googlemap</string>
     <string name="action_settings">Settings</string>
     
     <string name="drawer_open">Open navigation drawer</string>
@@ -27,5 +28,6 @@
         <item >Settings</item>
         <item >Log out</item>
     </string-array>
-    <string name="FACEBOOK_APP_ID">468681093287236</string>
+    <string name="FACEBOOK_APP_ID">1641911779376167</string>
+    <string name="GOOGLE_API_KEY">AIzaSyAqFo0Zec8S1W9OLy-MZONv72mmH2-Pzjs</string>
 </resources>

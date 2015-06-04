@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -18,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Filterable;
@@ -29,6 +32,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.listacheckbox.Model;
+import com.example.studoteka.GoogleMapFakulteti;
 import com.example.studoteka.R;
 import com.example.volley.AppController;
 
@@ -41,6 +45,7 @@ public class Fakulteti extends Fragment {
 	private ListView lv;
 	private EditText inputSearch;
 	private SwipeRefreshLayout refreshLayout;
+	private Bundle bundle;
 
 	public static final String url ="http://46.101.185.15//rest/cfddc7067c795d46f676c358dc6aacfcd20c195c";
 	
@@ -57,6 +62,21 @@ public class Fakulteti extends Fragment {
 		
 		adapter = new ArrayAdapter<Model>(getActivity(), android.R.layout.simple_list_item_1, prepareListData());
 		lv.setAdapter(adapter);
+		
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				
+				String fa = (String) parent.getItemAtPosition(position).toString();
+				Intent faksi = new Intent(getActivity(), GoogleMapFakulteti.class);
+				faksi.putExtra("fakulteti", fa);
+				startActivity(faksi);
+				
+			}
+		});
 		
 		//rerfresh dela jedino ak je vidljiv prvi fakultet u listi jer bi inaèe refrešal kad god potegneš prema dolje
 		lv.setOnScrollListener(new OnScrollListener() {
@@ -84,6 +104,7 @@ public class Fakulteti extends Fragment {
 			@Override
 			public void onRefresh() {
 				// TODO Auto-generated method stub
+				
 				prepareListData();
 			}
 		});

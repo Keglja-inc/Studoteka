@@ -10,6 +10,8 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,10 +19,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Filterable;
 import android.widget.ListView;
 
 import com.android.volley.Request.Method;
@@ -42,6 +46,8 @@ public class Interesi extends Fragment {
 	public CheckBox ck;
 	public static final String url ="http://46.101.185.15/rest/13275cf47a74867fa3d5c02d7719e1ff28e011ba";
 	final List<Interes> inter = new ArrayList<Interes>();
+	private SwipeRefreshLayout refreshLayout;
+	ArrayList<Interes> searchResult = new ArrayList<Interes>();
 	
 	private ArrayList<String> primljeno = new ArrayList<String>();
 	
@@ -63,6 +69,9 @@ public class Interesi extends Fragment {
 		inputSearch = (EditText) view.findViewById(R.id.inputSearch);
 		btn = (Button) view.findViewById(R.id.btn_odabrani_interesi);
 		adapter = new InteresiAdapter(dohvaceniPodaci(), getActivity());
+		refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_interesi);
+		refreshLayout.setColorSchemeResources(android.R.color.background_dark, android.R.color.holo_purple, 
+				android.R.color.holo_blue_bright, android.R.color.holo_green_light);
 		btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -80,13 +89,42 @@ public class Interesi extends Fragment {
 		
 		lv.setAdapter(adapter);
 		
-		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		lv.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				if(firstVisibleItem == 0)
+					refreshLayout.setEnabled(true);
+				else
+					refreshLayout.setEnabled(false);
+			}
+		});
+		
+		refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				// TODO Auto-generated method stub
+				dohvaceniPodaci();
+			}
+		});
+		
 		inputSearch.addTextChangedListener(new TextWatcher() {
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				// TODO Auto-generated method stub
-				Interesi.this.adapter.getFilter().filter(s);
+				
+				//ne dela baš najbolje
+				adapter.getFilter().filter(s.toString());
 			}
 			
 			@Override
@@ -102,6 +140,7 @@ public class Interesi extends Fragment {
 				
 			}
 		});
+	
 		return view;
 	}
 	
