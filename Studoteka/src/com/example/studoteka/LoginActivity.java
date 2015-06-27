@@ -1,11 +1,16 @@
 package com.example.studoteka;
 
+import java.sql.SQLException;
+
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,17 +18,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.db.DBAdapter;
+import com.example.login.PrijavaLocal;
 
-public class LoginActivity extends FragmentActivity {
+public class LoginActivity extends Activity{
 	private EditText username = null;
 	private EditText password = null;
 	private Button login, signup;
 	private TextView attempts;
-	int counter = 3;
-	ProgressDialog  d ;
-	private View view;
-	
-	
+	private int counter = 3;
+	private String username1, password1, email;
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		// TODO Auto-generated method stub
@@ -38,41 +42,76 @@ public class LoginActivity extends FragmentActivity {
 		signup = (Button)findViewById(R.id.btn_signup);
 		DBAdapter.init(this);
 		
+		if(android.os.Build.VERSION.SDK_INT>9){
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+		}
+		
+		
 		login.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				String username1 = username.getText().toString();
-				String password1 = password.getText().toString();
-				try {
+				 username1 = username.getText().toString();
+				 password1 = password.getText().toString();
+				
+				PrijavaLocal prijavaLocal = new PrijavaLocal(username1, password1);
+				if(prijavaLocal.prijava()){
+					//nastavi s app
+					Log.d("USPJEŠNA PRIJAVA", "prijavil sam se");
+					
 					if(username1.length() > 0 && password1.length() > 0){
-						if(DBAdapter.checkUser(username1, password1)){
+						try {
+							if(DBAdapter.checkUser(username1, password1)){
+								
+								email = DBAdapter.getProfilData(password1);
+								
+								SharedPreferences preferences = getSharedPreferences("EMAIL", getApplicationContext().MODE_PRIVATE);
+								Editor editor = preferences.edit();
+								editor.putString("POSLANI_MAIL", email);
+								editor.commit();
+								
+								
+									ProgressDialog pd = new ProgressDialog(LoginActivity.this);
+									pd.setMessage("Loading... please wait");
+									pd.setCancelable(true);
+									pd.show();
+							}
+							
 							Intent i = new Intent(getApplicationContext(), GlavnaActivity.class);
+							
 							startActivity(i);
-							cancelProgressDialog("Loading...", "Please wait...", "Cancel");
+							
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
+					}
 						else{
 							attempts.setBackgroundColor(Color.RED);	
 							counter--;
 							attempts.setText(Integer.toString(counter));
-							cancelProgressDialog("Warning!!", "Wrong credentials...", "Cancel");
+								ProgressDialog pd = new ProgressDialog(LoginActivity.this);
+								pd.setMessage("Wrong credentials...Please try again!");
+								pd.setCancelable(true);
+								pd.show();	
 							if(counter==0){
 							   login.setEnabled(false);
 							}
-							
 						}
-						
 					}
-				} catch (Exception e) {
-					// TODO: handle exception
-					cancelProgressDialog("ERROR", "Something has gone terrible wrong!!!Try again later...", "Cancel");
-					//d = ProgressDialog.show(getApplicationContext(), "ERROR", "Something has gone terrible wrong!!!Try again later...");
-					//d.setCancelable(true);
+			
+				else{
+					//javi da nekaj ne valja
+					Log.d("NEUSPJEŠNA PRIJAVA", "sjebali smo nekaj");
+					ProgressDialog pd = new ProgressDialog(LoginActivity.this);
+					pd.setMessage("Something has gone terrible wrong!!!Try again later...");
+					pd.setCancelable(true);
+					pd.show();
 				}
-			}
-		});
-		
+		}
+	});
 		signup.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -80,93 +119,7 @@ public class LoginActivity extends FragmentActivity {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(getApplicationContext(), SignupActivity.class);
 				startActivity(i);
-				
 			}
 		});
 	}
-	
-/*	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		view = inflater.inflate(R.layout.login_screen, container, false);
-		
-		username = (EditText)view.findViewById(R.id.edit_txt_user_name);
-		password = (EditText)view.findViewById(R.id.edit_txt_password);
-		attempts = (TextView)view.findViewById(R.id.textView5);
-		attempts.setText(Integer.toString(counter));
-		login = (Button)view.findViewById(R.id.login_button);
-		signup = (Button)view.findViewById(R.id.btn_signup);
-		DBAdapter.init(getActivity());
-		
-		login.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				String username1 = username.getText().toString();
-				String password1 = password.getText().toString();
-				try {
-					if(username1.length() > 0 && password1.length() > 0){
-						if(DBAdapter.checkUser(username1, password1)){
-							Intent i = new Intent(getActivity(), GlavnaActivity.class);
-							startActivity(i);
-							cancelProgressDialog("Login new user", "Please wait...", "Cancel");
-						}
-						else{
-							attempts.setBackgroundColor(Color.RED);	
-							counter--;
-							attempts.setText(Integer.toString(counter));
-							cancelProgressDialog("User does not exists", "Please signup or try again...", "Cancel");
-							
-							if(counter==0){
-							   login.setEnabled(false);
-							}
-							
-						}
-						
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-					cancelProgressDialog("ERROR", "Something has gone terrible wrong!!!Try again later...", "Cancel");
-				}
-			}
-		});
-		
-		signup.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(getActivity(), SignupFragment.class);
-				startActivity(i);
-				
-			}
-		});
-		
-		
-		return view;
-	}
-*/	
-	
-	@SuppressWarnings("deprecation")
-	private void cancelProgressDialog(String title, String message, String buttonText){
-		ProgressDialog cancelDialog = new ProgressDialog(this);
-		cancelDialog.setTitle(title);
-		cancelDialog.setMessage(message);
-		cancelDialog.setButton(buttonText, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				
-				dialog.dismiss();
-				
-				
-			}
-		});
-		cancelDialog.show();
-	}
-	
 }

@@ -31,24 +31,23 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.listacheckbox.Model;
+import com.example.modeli.FakultetiModel;
 import com.example.studoteka.GoogleMapFakulteti;
 import com.example.studoteka.R;
 import com.example.volley.AppController;
 
 public class Fakulteti extends Fragment {
-	
+
 	private View view;
-	private Model model;
-	private List<Model> fakulteti = new ArrayList<Model>();
-	private ArrayAdapter<Model> adapter;
+	private FakultetiModel model;
+	private List<FakultetiModel> fakulteti = new ArrayList<FakultetiModel>();
+	private List<FakultetiModel> url_fakulteti = new ArrayList<FakultetiModel>();
+	private ArrayAdapter<FakultetiModel> adapter;
 	private ListView lv;
 	private EditText inputSearch;
 	private SwipeRefreshLayout refreshLayout;
-	private Bundle bundle;
+	public static final String url = "http://46.101.185.15//rest/cfddc7067c795d46f676c358dc6aacfcd20c195c";
 
-	public static final String url ="http://46.101.185.15//rest/cfddc7067c795d46f676c358dc6aacfcd20c195c";
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -56,119 +55,129 @@ public class Fakulteti extends Fragment {
 		view = inflater.inflate(R.layout.fakulteti_fragment, container, false);
 		lv = (ListView) view.findViewById(android.R.id.list);
 		inputSearch = (EditText) view.findViewById(R.id.inputSearch);
-		refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-		refreshLayout.setColorSchemeResources(android.R.color.background_dark, android.R.color.holo_purple, 
-				android.R.color.holo_blue_bright, android.R.color.holo_green_light);
-		
-		adapter = new ArrayAdapter<Model>(getActivity(), android.R.layout.simple_list_item_1, prepareListData());
+		refreshLayout = (SwipeRefreshLayout) view
+				.findViewById(R.id.swipe_refresh);
+		refreshLayout.setColorSchemeResources(android.R.color.background_dark,
+				android.R.color.holo_purple, android.R.color.holo_blue_bright,
+				android.R.color.holo_green_light);
+
+		adapter = new ArrayAdapter<FakultetiModel>(getActivity(),
+				android.R.layout.simple_list_item_1, prepareListData());
 		lv.setAdapter(adapter);
-		
+
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				
-				String fa = (String) parent.getItemAtPosition(position).toString();
-				Intent faksi = new Intent(getActivity(), GoogleMapFakulteti.class);
-				faksi.putExtra("fakulteti", fa);
+				FakultetiModel test_model = (FakultetiModel) parent
+						.getItemAtPosition(position);
+				Intent faksi = new Intent(getActivity(),
+						GoogleMapFakulteti.class);
+				faksi.putExtra("fakulteti", test_model);
 				startActivity(faksi);
-				
+
 			}
 		});
-		
-		//rerfresh dela jedino ak je vidljiv prvi fakultet u listi jer bi inaèe refrešal kad god potegneš prema dolje
+
+		// rerfresh dela jedino ak je vidljiv prvi fakultet u listi jer bi inaèe
+		// refrešal kad god potegneš prema dolje
 		lv.setOnScrollListener(new OnScrollListener() {
-			
+
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
-				if(firstVisibleItem == 0)
+				if (firstVisibleItem == 0)
 					refreshLayout.setEnabled(true);
 				else
 					refreshLayout.setEnabled(false);
 			}
 		});
-		
-		//složeni refresh fakulteta
+
+		// složeni refresh fakulteta
 		refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-			
+
 			@Override
 			public void onRefresh() {
 				// TODO Auto-generated method stub
-				
+
 				prepareListData();
 			}
 		});
-		
-		//pretraživanje fakulteta
+
+		// pretraživanje fakulteta
 		inputSearch.addTextChangedListener(new TextWatcher() {
-			
+
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
 				// TODO Auto-generated method stub
 				((Filterable) Fakulteti.this.adapter).getFilter().filter(s);
 			}
-			
+
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		return view;
 	}
-	
-	private List<Model> prepareListData(){
-		
-		JsonObjectRequest objRq = new JsonObjectRequest(Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-			@Override
-			public void onResponse(JSONObject response) {
-				// TODO Auto-generated method stub
-				try {
-					JSONArray jsArray = response.getJSONArray("podaci");
-					Log.d("PODACI", jsArray.toString());
-					for(int i = 0; i<jsArray.length(); i++){
-						JSONObject jsObject = (JSONObject) jsArray.get(i);
-						String naziv = jsObject.getString("naziv");
-						model = new Model(naziv);
-						model.setName(naziv);
-						fakulteti.add(model);
-						Log.d("FAKULTETI", fakulteti.toString());
+	private List<FakultetiModel> prepareListData() {
+
+		JsonObjectRequest objRq = new JsonObjectRequest(Method.GET, url, null,
+				new Response.Listener<JSONObject>() {
+
+					@Override
+					public void onResponse(JSONObject response) {
+						// TODO Auto-generated method stub
+						try {
+							JSONArray jsArray = response.getJSONArray("podaci");
+							Log.d("PODACI", jsArray.toString());
+							for (int i = 0; i < jsArray.length(); i++) {
+								JSONObject jsObject = (JSONObject) jsArray
+										.get(i);
+								String naziv = jsObject.getString("naziv");
+								String url = jsObject.getString("url");
+								model = new FakultetiModel();
+								model.setName(naziv);
+								model.SetUrl(url);
+								fakulteti.add(model);
+								Log.d("FAKULTETI", fakulteti.toString());
+								Log.d("URL", url_fakulteti.toString());
+							}
+
+						} catch (Exception e) {
+							// TODO: handle exception
+							e.printStackTrace();
 						}
-						
-				
-				} catch (Exception e) {
-					// TODO: handle exception
-					e.printStackTrace();
-				}
-				adapter.notifyDataSetChanged();
-			}
-		}, new ErrorListener() {
+						adapter.notifyDataSetChanged();
+					}
+				}, new ErrorListener() {
 
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						// TODO Auto-generated method stub
+
+					}
+				});
 		AppController.getInstance().addToRequestQueue(objRq);
 		return fakulteti;
 	}

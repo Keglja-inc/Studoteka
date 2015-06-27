@@ -13,41 +13,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.modeli.Interes;
 import com.example.studoteka.R;
 
-class Interes{
-	public String name;
-	boolean selected = false;
-	public Interes(String name) {
-		super();
-		this.name = name;
-	}
-	public Interes() {
-		// TODO Auto-generated constructor stub
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public boolean isSelected() {
-		return selected;
-	}
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
 
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return name;
-	}
-}
 
 public class InteresiAdapter extends ArrayAdapter<Interes>{
 	
@@ -56,13 +27,10 @@ public class InteresiAdapter extends ArrayAdapter<Interes>{
 	private List<Interes> interesList;
 	private List<Interes> listaInteresa;
 	private InteresiFilter filter;
-	ArrayList<Interes> filtriraniInteresi = new ArrayList<Interes>();
-	private Interes interes;
-	
+	private ArrayList<Interes> filtriraniInteresi = new ArrayList<Interes>();
 	private final Activity context;
-	public ArrayList<String> odabrano = new ArrayList<String>();
-	public HashSet<String> hash = new HashSet<String>();
-	
+	public ArrayList<Interes> odabrano = new ArrayList<Interes>();
+	private HashSet<Interes> hash = new HashSet<Interes>();
 	
 	
 	
@@ -136,7 +104,7 @@ public class InteresiAdapter extends ArrayAdapter<Interes>{
 			Interes interes = (Interes) ck.getTag();
 			
 			if(ck.isChecked()){
-				hash.add(interes.getName());
+				hash.add(interes);
 					odabrano.clear();
 					odabrano.addAll(hash);		
 				Toast.makeText(context, "POdaci "+ interes.getName(), Toast.LENGTH_SHORT).show();

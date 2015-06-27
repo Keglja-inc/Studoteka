@@ -159,14 +159,31 @@ public class DBAdapter {
         db.close(); // Closing database connection
     }
  
+    
     // Getting single contact
-    public static String getProfilData(String mail) throws SQLException {
+    public static String getProfilData(String pass) throws SQLException {
     	Log.e("UserData", "Radi");
     	final SQLiteDatabase db = open();
+    	
+    	Cursor cursor = db.query(USER_TABLE, null, 
+    			KEY_PASSWORD + "=?", new String [] {String.valueOf(pass)} , null, null, null, null);
+        
+    	if(cursor.getCount()<1) // UserName Not Exist
+        {
+        	cursor.close();
+        	return "Ne postoji korisnik...";
+        }
+	    cursor.moveToNext();
  
+        String email= cursor.getString(cursor.getColumnIndexOrThrow("mail"));
+		cursor.close();
+		Log.d("MAILLLLLL", email.toString());
+		return email;
+    	
+    	/*
         Cursor cursor = db.query(USER_TABLE, new String[] { KEY_ID,
-        		KEY_USER_NAME,KEY_USER_LAST_NAME, KEY_USER_EMAIL,KEY_PASSWORD }, KEY_USER_EMAIL + "=?",
-                new String[] { String.valueOf(mail) }, null, null, null, null);
+        		KEY_USER_NAME,KEY_USER_LAST_NAME, KEY_USER_EMAIL,KEY_PASSWORD }, KEY_PASSWORD + "='"+pass+"'",
+                new String[] { String.valueOf(pass) }, null, null, null, null);
         
         
         if(cursor.getCount()<1) // UserName Not Exist
@@ -176,10 +193,14 @@ public class DBAdapter {
         }
 	    cursor.moveToNext();
  
-        String password= cursor.getString(cursor.getColumnIndex("lozinka"));
+        String email= cursor.getString(cursor.getColumnIndex("email"));
 		cursor.close();
-		return password;
+		Log.d("MAILLLLLL", email.toString());
+		return email;
+		*/
     }
+    
+    
     
     public static String getProfilDataFUll(String mail) throws SQLException {
     	Log.e("UserData", "Radi");

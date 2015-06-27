@@ -2,7 +2,13 @@ package com.example.dodaci;
 
 import java.util.ArrayList;
 
-public interface TabCommunication {
+import com.example.modeli.FakultetiModel;
+import com.example.modeli.Interes;
 
-	public void SendData(ArrayList<String> data);
+public interface TabCommunication {
+	
+	public void SendData(ArrayList<Interes> data);
+	
+	public void SendData2(ArrayList<FakultetiModel> data);
+
 }

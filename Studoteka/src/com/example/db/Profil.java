@@ -2,15 +2,10 @@ package com.example.db;
 
 public class Profil {
 	
+	private int id;
+	private String ime, prezime, mail, lozinka;
 	
-	
-	int id;
-	String ime;
-	String prezime;
-	String mail;
-	String lozinka;
-	public Profil(int id, String ime, String prezime, String mail,
-			String lozinka) {
+	public Profil(int id, String ime, String prezime, String mail, String lozinka) {
 		super();
 		this.id = id;
 		this.ime = ime;
@@ -19,18 +14,17 @@ public class Profil {
 		this.lozinka = lozinka;
 	}
 	
-public Profil() {
+	public Profil() {
 		
 	}
 
-
 	public Profil(String ime, String prezime, String mail, String lozinka) {
-	super();
-	this.ime = ime;
-	this.prezime = prezime;
-	this.mail = mail;
-	this.lozinka = lozinka;
-}
+		super();
+		this.ime = ime;
+		this.prezime = prezime;
+		this.mail = mail;
+		this.lozinka = lozinka;
+	}
 
 	public int getId() {
 		return id;
@@ -62,7 +56,4 @@ public Profil() {
 	public void setLozinka(String lozinka) {
 		this.lozinka = lozinka;
 	}
-	
-	
-
 }
