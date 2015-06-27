@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginRight="5dp"
+    android:orientation="vertical" >
+    
+    <Switch
+        android:id="@+id/Prvi_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="opsis"
+        
+        android:onClick="OnSwitchClicked" />
+    
+    <Switch
+        android:id="@+id/Drugi_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ops" />
+    
+    <Switch
+        android:id="@+id/Treci_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="nekaj" />
+    
+</LinearLayout>

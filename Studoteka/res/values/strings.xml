@@ -17,6 +17,8 @@
     <string name="btn_odustani">"Odustani"</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Hint</string>
+    <string name="Slika">Slika</string>
+    <string name="opis_app">Opis</string>
     <string name="osobni_interesi">"Odabrani interesi"</string>
 
     <string-array name="nav_drawer_items">
