@@ -13,12 +13,10 @@
     <string name="attempts">Attempts left:</string>
     <string name="btn_login">Login</string>
     <string name="btn_signup">Sign\' up</string>
-    <string name="btn_spremi">"Spremi"</string>
-    <string name="btn_odustani">"Odustani"</string>
+    <string name="btn_spremi">"  Spremi  "</string>
+    <string name="btn_odustani">" Odustani "</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Hint</string>
-    <string name="Slika">Slika</string>
-    <string name="opis_app">Opis</string>
     <string name="osobni_interesi">"Odabrani interesi"</string>
 
     <string-array name="nav_drawer_items">
@@ -32,4 +30,29 @@
     </string-array>
     <string name="FACEBOOK_APP_ID">1641911779376167</string>
     <string name="GOOGLE_API_KEY">AIzaSyAqFo0Zec8S1W9OLy-MZONv72mmH2-Pzjs</string>
+    
+    <string name="Opis_za_dialog">Opis</string>
+    <string name="Omoguci_otvaranje_dialoga_sa_opcije">drugi opis</string>
+    <string name="omoguci">Opis</string>
+    <string name="pristupanjeserveru">opis treci</string>
+    
+    
+    <string name="korisnicko_ime">Korisničko ime:</string>
+    <string name="ime_korisnika">Ime korisnika:</string>
+    <string name="prezime_korisnika">Prezime korisnika:</string>
+    <string name="mail_adresa">Mail korisnika:</string>
+    <string name="lozinka">Lozinka:</string>
+    <string name="potvrda_lozinke">Potvrda lozinke:</string>
+    
+    <string name="Slika">Opis slike</string>
+    
+    <string name="opis_app" >Aplikacija je napravljena u svrhu kako bi pomogla budućim studentima oko odabira sveučilište te fakulteta. Svaki korisnik aplikacije može pregledavati sveučilišta i fakultete. Ako neki korisnik aplikacije već unaprijed zna koji su njegovi interesi, može odabrati interese te će mu aplikacija sama vratiti popis fakulteta koji najbolje odgovaraju njegovim interesima.</string>
+    <string name="developeri">\nAplikaciju su izradili:   \nAlen Kostanjevec\nIvan Rostohar\nDeni Slunjski\nDavorin Špičko</string>
+    
+    <string name="options">Options</string>
+    
+    <string name="user">User</string>
+    
+    
+    
 </resources>

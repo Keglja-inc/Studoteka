@@ -25,6 +25,6 @@
          android:id="@+id/developeri"
          android:layout_width="134dp"
          android:layout_height="wrap_content"
-         android:text="developeri" />
+         android:text="@string/developeri" />
 
 </LinearLayout>

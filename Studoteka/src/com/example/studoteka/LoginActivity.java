@@ -57,7 +57,7 @@ public class LoginActivity extends Activity{
 				 password1 = password.getText().toString();
 				
 				PrijavaLocal prijavaLocal = new PrijavaLocal(username1, password1);
-				if(prijavaLocal.prijava()){
+			//	if(prijavaLocal.prijava()){
 					//nastavi s app
 					Log.d("USPJEŠNA PRIJAVA", "prijavil sam se");
 					
@@ -79,8 +79,11 @@ public class LoginActivity extends Activity{
 									pd.show();
 							}
 							
-							Intent i = new Intent(getApplicationContext(), GlavnaActivity.class);
+							Bundle novi = new Bundle();
+							novi.putString("prijenos", username1);
 							
+							Intent i = new Intent(getApplicationContext(), GlavnaActivity.class);
+							i.putExtras(novi);
 							startActivity(i);
 							
 						} catch (SQLException e) {
@@ -100,8 +103,8 @@ public class LoginActivity extends Activity{
 							   login.setEnabled(false);
 							}
 						}
-					}
-			
+					//}
+			/*
 				else{
 					//javi da nekaj ne valja
 					Log.d("NEUSPJEŠNA PRIJAVA", "sjebali smo nekaj");
@@ -110,6 +113,7 @@ public class LoginActivity extends Activity{
 					pd.setCancelable(true);
 					pd.show();
 				}
+				*/
 		}
 	});
 		signup.setOnClickListener(new OnClickListener() {
