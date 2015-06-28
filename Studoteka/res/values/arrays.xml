@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name = "tipovi_google_mapa">
+        <item name="mapa1">Normalna</item>
+        <item name="mapa2">Hibridna</item>
+        <item name="mapa3">Satelitska</item>
+        <item name="mapa4">Zemljišna</item>
+    </string-array>
+    
+    <string-array name = "tipovi_google_mapa2">
+        <item name="mapa1">Normalna</item>
+        <item name="mapa2">Hibridna</item>
+        <item name="mapa3">Satelitska</item>
+        <item name="mapa4">Zemljišna</item>
+    </string-array>
+    
+</resources>

@@ -1,36 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-        <PreferenceCategory 
-        android:title="@string/options"
-        android:key="pref_key_storage_settings">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:key="pref_key_storage_settings"
+        android:title="@string/options" >
         <CheckBoxPreference
-            android:key="pref_key_auto_delete"
-            android:summary="nekaj"
-            android:title="nekaj"
-            android:defaultValue="false"/>
-        <Preference 
+            android:defaultValue="false"
+            android:key="pref_rotate_screen"
+            android:summary="Želite li omogućiti rotaciju zaslona"
+            android:title="Rotacija zaslona" />
+        <Preference
             android:key="pref_key_sms_delete_limit"
-            android:dependency="pref_key_auto_delete"
             android:summary="nekaj"
             android:title="nekaj" />
-        <Preference 
+        <Preference
             android:key="pref_key_mms_delete_limit"
-            android:dependency="pref_key_auto_delete"
             android:summary="nekaj"
             android:title="nekaj" />
     </PreferenceCategory>
-    <PreferenceCategory 
-        android:title="@string/user"
-        android:key="user">
-        <Preference 
+    <PreferenceCategory android:key="Mapa" >
+        <ListPreference
+            android:key="lista_mapa"
+            android:summary="@string/mapa_summary"
+            android:title="@string/google_mapa"
+            android:entries="@array/tipovi_google_mapa"
+            android:entryValues="@array/tipovi_google_mapa2"
+            android:defaultValue="Normalna"
+            android:dialogTitle="Odaberite tip mape"
+             />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="user"
+        android:title="@string/user" >
+        <Preference
             android:key="mail"
             android:title="" />
-        <Preference 
+        <Preference
             android:key="ime_prezime"
             android:title="" />
-        
-
     </PreferenceCategory>
-        
 
-    </PreferenceScreen>
+</PreferenceScreen>

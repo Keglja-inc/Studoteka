@@ -116,4 +116,21 @@ public class GoogleMapFakulteti extends FragmentActivity{
 	    
 	    return p1;
 	}
+	
+	public void PromjeniTipMape (String tip){
+		googleMap = ((MapFragment)getFragmentManager().findFragmentById(R.id.map)).getMap();
+
+		if(tip == "Normalna"){
+			googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+		}
+		else if (tip == "Hibridna") {
+			googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+		}
+		else if (tip == "Satelitska") {
+			googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+		}
+		else if (tip == "Zemljišna") {
+			googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+		}
+	}
 }

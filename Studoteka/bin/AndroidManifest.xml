@@ -8,6 +8,11 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="20" />
     
+    <instrumentation 
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="com.example.studoteka"
+    />
+    
     <permission 
         android:name="com.example.studoteka.permission.MAPS_RECEIVE"
         android:protectionLevel="signature">
@@ -35,7 +40,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-       
+        
+      <uses-library android:name="android.test.runner" /> 
        
         
         <activity

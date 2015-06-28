@@ -53,6 +53,9 @@
     
     <string name="user">User</string>
     
+    <string name="google_mapa">Mapa</string>
+    <string name="mapa_summary">Odabir google mape</string>
+    
     
     
 </resources>
