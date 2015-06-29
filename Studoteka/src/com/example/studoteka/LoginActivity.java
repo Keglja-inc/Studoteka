@@ -18,9 +18,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.db.DBAdapter;
+import com.example.login.PrijavaInterface;
 import com.example.login.PrijavaLocal;
 
-public class LoginActivity extends Activity{
+public class LoginActivity extends Activity {
 	private EditText username = null;
 	private EditText password = null;
 	private Button login, signup;
@@ -33,97 +34,106 @@ public class LoginActivity extends Activity{
 		// TODO Auto-generated method stub
 		super.onCreate(arg0);
 		setContentView(R.layout.login_screen);
-		
-		username = (EditText)findViewById(R.id.edit_txt_user_name);
-		password = (EditText)findViewById(R.id.edit_txt_password);
-		attempts = (TextView)findViewById(R.id.textView5);
+
+		username = (EditText) findViewById(R.id.edit_txt_user_name);
+		password = (EditText) findViewById(R.id.edit_txt_password);
+		attempts = (TextView) findViewById(R.id.textView5);
 		attempts.setText(Integer.toString(counter));
-		login = (Button)findViewById(R.id.login_button);
-		signup = (Button)findViewById(R.id.btn_signup);
+		login = (Button) findViewById(R.id.login_button);
+		signup = (Button) findViewById(R.id.btn_signup);
 		DBAdapter.init(this);
-		
-		if(android.os.Build.VERSION.SDK_INT>9){
-			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+		if (android.os.Build.VERSION.SDK_INT > 9) {
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+					.permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 		}
-		
-		
+
 		login.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				 username1 = username.getText().toString();
-				 password1 = password.getText().toString();
-				
-				PrijavaLocal prijavaLocal = new PrijavaLocal(username1, password1);
-			//	if(prijavaLocal.prijava()){
-					//nastavi s app
+				username1 = username.getText().toString();
+				password1 = password.getText().toString();
+
+				// moraš ruèno dopisati new PrijavaLocal jer ti inaèe neda
+				PrijavaInterface pi = (PrijavaInterface) new PrijavaLocal(
+						username1, password1,
+						"http://46.101.185.15/rest/3982bb6a86fec50fd20ee0c3cd6ff474f4ceb78e");
+
+				if (pi.prijava()) {
+					// nastavi s app
 					Log.d("USPJEŠNA PRIJAVA", "prijavil sam se");
-					
-					if(username1.length() > 0 && password1.length() > 0){
+
+					if (username1.length() > 0 && password1.length() > 0) {
 						try {
-							if(DBAdapter.checkUser(username1, password1)){
-								
+							if (DBAdapter.checkUser(username1, password1)) {
+
 								email = DBAdapter.getProfilData(password1);
-								
-								SharedPreferences preferences = getSharedPreferences("EMAIL", getApplicationContext().MODE_PRIVATE);
+
+								SharedPreferences preferences = getSharedPreferences(
+										"EMAIL",
+										getApplicationContext().MODE_PRIVATE);
 								Editor editor = preferences.edit();
 								editor.putString("POSLANI_MAIL", email);
 								editor.commit();
-								
-								
-									ProgressDialog pd = new ProgressDialog(LoginActivity.this);
-									pd.setMessage("Loading... please wait");
-									pd.setCancelable(true);
-									pd.show();
+
+								ProgressDialog pd = new ProgressDialog(
+										LoginActivity.this);
+								pd.setMessage("Loading... please wait");
+								pd.setCancelable(true);
+								pd.show();
 							}
-							
+
 							Bundle novi = new Bundle();
 							novi.putString("prijenos", username1);
-							
-							Intent i = new Intent(getApplicationContext(), GlavnaActivity.class);
+
+							Intent i = new Intent(getApplicationContext(),
+									GlavnaActivity.class);
 							i.putExtras(novi);
 							startActivity(i);
-							
+
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-					}
-						else{
-							attempts.setBackgroundColor(Color.RED);	
-							counter--;
-							attempts.setText(Integer.toString(counter));
-								ProgressDialog pd = new ProgressDialog(LoginActivity.this);
-								pd.setMessage("Wrong credentials...Please try again!");
-								pd.setCancelable(true);
-								pd.show();	
-							if(counter==0){
-							   login.setEnabled(false);
-							}
+					} else {
+						attempts.setBackgroundColor(Color.RED);
+						counter--;
+						attempts.setText(Integer.toString(counter));
+						ProgressDialog pd = new ProgressDialog(
+								LoginActivity.this);
+						pd.setMessage("Wrong credentials...Please try again!");
+						pd.setCancelable(true);
+						pd.show();
+						if (counter == 0) {
+							login.setEnabled(false);
 						}
-					//}
-			/*
-				else{
-					//javi da nekaj ne valja
+					}
+				}
+
+				else {
+					// javi da nekaj ne valja
 					Log.d("NEUSPJEŠNA PRIJAVA", "sjebali smo nekaj");
 					ProgressDialog pd = new ProgressDialog(LoginActivity.this);
 					pd.setMessage("Something has gone terrible wrong!!!Try again later...");
 					pd.setCancelable(true);
 					pd.show();
 				}
-				*/
-		}
-	});
+
+			}
+		});
 		signup.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(getApplicationContext(), SignupActivity.class);
+				Intent i = new Intent(getApplicationContext(),
+						SignupActivity.class);
 				startActivity(i);
 			}
 		});
 	}
+
 }

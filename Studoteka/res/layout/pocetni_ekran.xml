@@ -32,6 +32,12 @@
         android:text="LOGIN"
         android:background="@drawable/custom_button_design" />
 		
-   
+   <TextView
+        android:id="@+id/text_details"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/login_button" />
     
 </RelativeLayout>

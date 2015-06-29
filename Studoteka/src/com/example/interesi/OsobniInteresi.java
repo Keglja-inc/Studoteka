@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.dodaci.TabCommunication;
 import com.example.modeli.FakultetiModel;
@@ -55,7 +54,6 @@ public class OsobniInteresi extends Fragment {
 				.findViewById(R.id.list_osobni_interesi);
 		btn_izracunaj_interese = (Button) view
 				.findViewById(R.id.btn_odabrani_interesi);
-		
 
 		SharedPreferences pref = this.getActivity().getSharedPreferences(
 				"EMAIL", getActivity().MODE_PRIVATE);
@@ -133,16 +131,19 @@ public class OsobniInteresi extends Fragment {
 			Log.d("responseString", responseString);
 
 			JSONObject jsObject = new JSONObject(responseString);
-			JSONArray jsArrayPoslano = jsObject.getJSONArray("podaci");
 
-			for (int i = 0; i < jsArrayPoslano.length(); i++) {
-				JSONObject jso = (JSONObject) jsArrayPoslano.get(i);
-				fm = new FakultetiModel();
-				fm.setName(jso.getString("nazivFakulteta"));
-				fm.setPostotak(jso.getString("postotak"));
-				fm.setUrl(jso.getString("url"));
-				listaFM.add(fm);
+			if (jsObject.getBoolean("status") == true) {
+				JSONArray jsArrayPoslano = jsObject.getJSONArray("podaci");
 
+				for (int i = 0; i < jsArrayPoslano.length(); i++) {
+					JSONObject jso = (JSONObject) jsArrayPoslano.get(i);
+					fm = new FakultetiModel();
+					fm.setName(jso.getString("nazivFakulteta"));
+					fm.setPostotak(jso.getString("postotak"));
+					fm.setUrl(jso.getString("url"));
+					listaFM.add(fm);
+
+				}
 			}
 
 			com2.SendData2(listaFM);
@@ -153,7 +154,7 @@ public class OsobniInteresi extends Fragment {
 			Log.d("OVO JE E", e.toString());
 		}
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
@@ -162,7 +163,8 @@ public class OsobniInteresi extends Fragment {
 			com2 = (TabCommunication) getActivity();
 		} catch (ClassCastException e) {
 			// TODO: handle exception
-			throw new ClassCastException(activity.toString() +  "must implement interface!");
+			throw new ClassCastException(activity.toString()
+					+ "must implement interface!");
 		}
 	}
 }

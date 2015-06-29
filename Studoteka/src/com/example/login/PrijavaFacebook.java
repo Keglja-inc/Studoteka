@@ -8,4 +8,5 @@ public class PrijavaFacebook implements PrijavaInterface {
 		return false;
 	}
 
+	
 }

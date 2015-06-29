@@ -2,16 +2,17 @@ package com.example.studoteka;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
@@ -19,93 +20,124 @@ import com.facebook.login.widget.LoginButton;
 
 public class FacebookLog extends android.support.v4.app.Fragment {
 
-	private View view;
-	private LoginButton btn_facebook;
+	private LoginButton mButtonLogin;
+	private TextView mTextDetails;
+	private CallbackManager mCallbackManager;
 	private AccessTokenTracker mTokenTracker;
 	private ProfileTracker mProfileTracker;
-	private CallbackManager callbackManager;
-	private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
+	private FacebookCallback<LoginResult> mFacebookCallback; 
 
-		@Override
-		public void onSuccess(LoginResult result) {
-			// TODO Auto-generated method stub
-			AccessToken accessToken = result.getAccessToken();
-			Profile profile = Profile.getCurrentProfile();
-		}
+	public FacebookLog() {
+		// TODO Auto-generated constructor stub
+	}
 
-		@Override
-		public void onCancel() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onError(FacebookException error) {
-			// TODO Auto-generated method stub
-			
-		}
-	};
-	
-	public FacebookLog(){}
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
-		callbackManager = CallbackManager.Factory.create();
-		mTokenTracker = new AccessTokenTracker() {
-			
-			@Override
-			protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,
-					AccessToken currentAccessToken) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-		mProfileTracker = new ProfileTracker() {
-			
-			@Override
-			protected void onCurrentProfileChanged(Profile oldProfile,
-					Profile currentProfile) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
+
+		mCallbackManager = CallbackManager.Factory.create();
+		setupTokenTracker();
+		setupProfileTracker();
+
 		mTokenTracker.startTracking();
 		mProfileTracker.startTracking();
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		view = inflater.inflate(R.layout.pocetni_ekran, container, false);
-		
-		return view;
+		return inflater.inflate(R.layout.pocetni_ekran, container, false);
 	}
-	
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onViewCreated(view, savedInstanceState);
-		btn_facebook = (LoginButton) view.findViewById(R.id.login_button);
-		btn_facebook.setFragment(this);
-		btn_facebook.registerCallback(callbackManager, callback);
+		setupTextDetails(view);
+		setupLoginButton(view);
 	}
-	
+
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
-		super.onActivityResult(requestCode, resultCode, data);
-		callbackManager.onActivityResult(requestCode, resultCode, data);
+	public void onResume() {
+		super.onResume();
+		Profile profile = Profile.getCurrentProfile();
+		mTextDetails.setText(constructWelcomeMessage(profile));
 	}
-	
+
 	@Override
 	public void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
 		mTokenTracker.stopTracking();
 		mProfileTracker.stopTracking();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		mCallbackManager.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void setupTextDetails(View view) {
+		mTextDetails = (TextView) view.findViewById(R.id.text_details);
+	}
+
+	private void setupTokenTracker() {
+		mTokenTracker = new AccessTokenTracker() {
+			@Override
+			protected void onCurrentAccessTokenChanged(
+					AccessToken oldAccessToken, AccessToken currentAccessToken) {
+				Log.d("VIVZ", "" + currentAccessToken);
+			}
+		};
+	}
+
+	private void setupProfileTracker() {
+		mProfileTracker = new ProfileTracker() {
+			@Override
+			protected void onCurrentProfileChanged(Profile oldProfile,
+					Profile currentProfile) {
+				Log.d("VIVZ", "" + currentProfile);
+				mTextDetails.setText(constructWelcomeMessage(currentProfile));
+			}
+		};
+	}
+
+	private void setupLoginButton(View view) {
+		mButtonLogin = (LoginButton) view
+				.findViewById(R.id.login_button);
+		mButtonLogin.setFragment(this);
+		// if (Build.VERSION.SDK_INT >= 16)
+		// mButtonLogin.setBackground(null);
+		// else
+		// mButtonLogin.setBackgroundDrawable(null);
+		mButtonLogin.setCompoundDrawables(null, null, null, null);
+	
+		mButtonLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+			@Override
+			public void onSuccess(LoginResult loginResult) {
+				Log.d("VIVZ", "onSuccess");
+				AccessToken accessToken = loginResult.getAccessToken();
+				Profile profile = Profile.getCurrentProfile();
+				mTextDetails.setText(constructWelcomeMessage(profile));
+
+			}
+
+			@Override
+			public void onCancel() {
+				Log.d("VIVZ", "onCancel");
+			}
+
+			@Override
+			public void onError(FacebookException e) {
+				Log.d("VIVZ", "onError " + e);
+			}
+		});
+		Log.d("VIVZ", "" + "KREIRAL SAM LOGIN BUTTON");
+	}
+
+	private String constructWelcomeMessage(Profile profile) {
+		StringBuffer stringBuffer = new StringBuffer();
+		if (profile != null) {
+			stringBuffer.append("Welcome " + profile.getName());
+		}
+		return stringBuffer.toString();
 	}
 }

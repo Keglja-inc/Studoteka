@@ -10,66 +10,61 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-public class PrijavaLocal{
+public class PrijavaLocal implements PrijavaInterface {
 
-	private String email, password;
-	private String url = "http://46.101.185.15/rest/3982bb6a86fec50fd20ee0c3cd6ff474f4ceb78e";
-	
+	private String email, password, url;
 
-	
-	public PrijavaLocal(String email, String password) {
+	public PrijavaLocal(String email, String password, String url) {
 		super();
 		this.email = email;
 		this.password = password;
+		this.url = url;
 	}
 
-	
-
-	public boolean prijava (){
-	
+	@Override
+	public boolean prijava() {
 		try {
-			//create HttpClient
+			// create HttpClient
 			HttpClient httpClient = new DefaultHttpClient();
-			
-			//make POST request to the given URL
+
+			// make POST request to the given URL
 			HttpPost httpPost = new HttpPost(this.url);
-			
+
 			String json = "";
-			
-			//build jsonObject
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("email", this.email);
-            jsonObject.accumulate("lozinka", this.password);
- 
-            //convert JSONObject to JSON to String
-            json = jsonObject.toString();
- 
-            //set json to StringEntity
-            StringEntity se = new StringEntity(json);
- 
-            //set httpPost Entity
-            httpPost.setEntity(se);
-            
-            //Execute POST request to the given URL
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            
-            //convert response to String
-            String responseString = EntityUtils.toString(httpResponse.getEntity());
+
+			// build jsonObject
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.accumulate("email", this.email);
+			jsonObject.accumulate("lozinka", this.password);
+
+			// convert JSONObject to JSON to String
+			json = jsonObject.toString();
+
+			// set json to StringEntity
+			StringEntity se = new StringEntity(json);
+
+			// set httpPost Entity
+			httpPost.setEntity(se);
+
+			// Execute POST request to the given URL
+			HttpResponse httpResponse = httpClient.execute(httpPost);
+
+			// convert response to String
+			String responseString = EntityUtils.toString(httpResponse
+					.getEntity());
 			Log.d("Http Post Response:", responseString);
-			
-			
-			
+
 			JSONObject jo = new JSONObject(responseString.toString());
-			
-			
-			
-			if(jo.get("status").equals(true)){
+
+			if (jo.get("status").equals(true)) {
 				return true;
 			}
-            
+
 		} catch (Exception e) {
-			Log.d("EXCEPTION LOGIN", "JEBEŠ ME"+e.toString());
+			Log.d("EXCEPTION LOGIN", "JEBEŠ ME" + e.toString());
 		}
 		return false;
-	}	
+
+	}
+
 }
