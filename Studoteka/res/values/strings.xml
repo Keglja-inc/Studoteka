@@ -8,26 +8,29 @@
     
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_closed">Close navigation drawer</string>
-    <string name="user_name">User name:</string>
-    <string name="password">Password:</string>
-    <string name="attempts">Attempts left:</string>
-    <string name="btn_login">Login</string>
-    <string name="btn_signup">Sign\' up</string>
+    <string name="email">E - mail:</string>
+    <string name="poruka_email">Upišite e - mail adresu</string>
+    <string name="password">Lozinka:</string>
+    
+    <string name="btn_login">Prijava</string>
+    <string name="btn_signup">Registracija</string>
     <string name="btn_spremi">"  Spremi  "</string>
     <string name="btn_odustani">" Odustani "</string>
     <string name="search_title">Search</string>
-    <string name="search_hint">Hint</string>
+    <string name="search_hint">Pretraži interese</string>
+    <string name="search_hint_fakulteti">Pretraži fakultete</string>
     <string name="osobni_interesi">"Odabrani interesi"</string>
 
     <string-array name="nav_drawer_items">
-        <item >What\'s trending</item>
-        <item >Find my collage</item>
-        <item >List of Collages</item>
-        <item >Profile</item>
-        <item >About us</item>
-        <item >Settings</item>
-        <item >Log out</item>
+        <item >Novosti</item>
+        <item >Pronađi fakultet</item>
+        <item >Popis fakulteta</item>
+        <item >Profil</item>
+        <item >O nama</item>
+        <item >Postavke</item>
+        <item >Odjava</item>
     </string-array>
+    
     <string name="FACEBOOK_APP_ID">1641911779376167</string>
     <string name="GOOGLE_API_KEY">AIzaSyAqFo0Zec8S1W9OLy-MZONv72mmH2-Pzjs</string>
     
@@ -37,22 +40,25 @@
     <string name="pristupanjeserveru">opis treci</string>
     
     
-    <string name="korisnicko_ime">Korisničko ime:</string>
-    <string name="ime_korisnika">Ime korisnika:</string>
-    <string name="prezime_korisnika">Prezime korisnika:</string>
-    <string name="mail_adresa">Mail korisnika:</string>
-    <string name="lozinka">Lozinka:</string>
-    <string name="potvrda_lozinke">Potvrda lozinke:</string>
+    <string name="poruka_ime_korisnika">Upišite ime </string>
+    <string name="poruka_prezime_korisnika">Upišite prezime </string>
+    <string name="poruka_mail_adresa">Upišite E - mail </string>
+    <string name="poruka_lozinka">Upišite lozinku </string>
+    <string name="poruka_potvrda_lozinke">Potvrdite lozinku </string>
     
     <string name="Slika">Opis slike</string>
     
     <string name="opis_app" >Aplikacija je napravljena u svrhu kako bi pomogla budućim studentima oko odabira sveučilište te fakulteta. Svaki korisnik aplikacije može pregledavati sveučilišta i fakultete. Ako neki korisnik aplikacije već unaprijed zna koji su njegovi interesi, može odabrati interese te će mu aplikacija sama vratiti popis fakulteta koji najbolje odgovaraju njegovim interesima.</string>
-    <string name="developeri">\nAplikaciju su izradili:   \nAlen Kostanjevec\nIvan Rostohar\nDeni Slunjski\nDavorin Špičko</string>
+    <string name="developeri">Aplikaciju su izradili:   \nAlen Kostanjevec\nIvan Rostohar\nDeni Slunjski\nDavorin Špičko</string>
     
     <string name="options">Options</string>
     
     <string name="user">User</string>
     
+    
+    <string name="btn_web_stranica">Web fakulteta</string>
+    <string name="btn_restorani">Restorani u blizini</string>
+    <string name="btn_kulturni_sadrzaj">Kazališta u blizini</string>
     <string name="google_mapa">Mapa</string>
     <string name="mapa_summary">Odabir google mape</string>
     

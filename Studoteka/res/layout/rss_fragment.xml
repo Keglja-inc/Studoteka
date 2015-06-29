@@ -9,7 +9,7 @@
         android:id="@+id/RssListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#B2DFDB">
+        android:background="#FFFFFF">
         
     </ListView>
 

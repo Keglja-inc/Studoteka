@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.modeli.UcenikModel;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -136,7 +138,7 @@ public class DBAdapter {
 	 */
 	// Adding new contact
 
-	public static void addUserData(Profil uData) throws SQLException {
+	public static void addUserData(UcenikModel uData) throws SQLException {
 		final SQLiteDatabase db = open();
 
 		String name = sqlEscapeString(uData.getIme());
@@ -236,8 +238,8 @@ public class DBAdapter {
 	}
 
 	// Getting All Contacts
-	public static List<Profil> getAllUserData() throws SQLException {
-		List<Profil> contactList = new ArrayList<Profil>();
+	public static List<UcenikModel> getAllUserData() throws SQLException {
+		List<UcenikModel> contactList = new ArrayList<UcenikModel>();
 		// Select All Query
 		String selectQuery = "SELECT  * FROM " + USER_TABLE;
 
@@ -247,7 +249,7 @@ public class DBAdapter {
 		// looping through all rows and adding to list
 		if (cursor.moveToFirst()) {
 			do {
-				Profil data = new Profil();
+				UcenikModel data = new UcenikModel();
 				data.setId(Integer.parseInt(cursor.getString(0)));
 				data.setIme(cursor.getString(1));
 				data.setPrezime(cursor.getString(2));
@@ -263,7 +265,7 @@ public class DBAdapter {
 	}
 
 	// Updating single contact
-	public static int updateUserData(Profil data) throws SQLException {
+	public static int updateUserData(UcenikModel data) throws SQLException {
 		final SQLiteDatabase db = open();
 
 		ContentValues values = new ContentValues();
@@ -278,7 +280,7 @@ public class DBAdapter {
 	}
 
 	// Deleting single contact
-	public static void deleteUserData(Profil data) throws SQLException {
+	public static void deleteUserData(UcenikModel data) throws SQLException {
 		final SQLiteDatabase db = open();
 		db.delete(USER_TABLE, KEY_ID + " = ?",
 				new String[] { String.valueOf(data.getId()) });

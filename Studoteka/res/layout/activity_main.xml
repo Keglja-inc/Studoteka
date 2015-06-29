@@ -3,21 +3,22 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E0F2F1">
+    android:background="#FFFFFF">
 
     <FrameLayout 
         android:id="@+id/main_content"
         android:layout_width="match_parent"
-    	android:layout_height="match_parent">
+    	android:layout_height="match_parent"
+    	android:background="#FFFFFF">
     </FrameLayout>
     
-    <ListView 
+    <ListView
         android:id="@+id/drawer_list"
-        android:background="#ADC2FF"
         android:layout_width="240dp"
-    	android:layout_height="match_parent"
-    	android:layout_gravity="start"
-    	>
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#3897CF" >
+
     </ListView>
 
 </android.support.v4.widget.DrawerLayout>
