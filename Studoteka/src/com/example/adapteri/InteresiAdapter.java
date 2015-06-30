@@ -15,15 +15,12 @@ import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.modeli.InteresModel;
 import com.example.studoteka.R;
 
+public class InteresiAdapter extends ArrayAdapter<InteresModel> {
 
-
-public class InteresiAdapter extends ArrayAdapter<InteresModel>{
-	
-	
-	
 	private List<InteresModel> interesList;
 	private List<InteresModel> listaInteresa;
 	private InteresiFilter filter;
@@ -31,9 +28,7 @@ public class InteresiAdapter extends ArrayAdapter<InteresModel>{
 	private final Activity context;
 	public ArrayList<InteresModel> odabrano = new ArrayList<InteresModel>();
 	private HashSet<InteresModel> hash = new HashSet<InteresModel>();
-	
-	
-	
+
 	public InteresiAdapter(List<InteresModel> interesList, Activity context) {
 		super(context, R.layout.rowbuttonlayout, interesList);
 		this.context = context;
@@ -43,118 +38,114 @@ public class InteresiAdapter extends ArrayAdapter<InteresModel>{
 	@Override
 	public Filter getFilter() {
 		// TODO Auto-generated method stub
-		if(filter == null){
+		if (filter == null) {
 			filter = new InteresiFilter();
 		}
 		return filter;
 	}
-	
-	private static class InteresHolder{
+
+	private static class InteresHolder {
 		public TextView interesName;
 		public CheckBox chkBox;
-		
+
 	}
-	
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		View view = null;
 		InteresHolder holder = null;
-		
-		if(convertView == null){
+
+		if (convertView == null) {
 			LayoutInflater inflator = context.getLayoutInflater();
 			view = inflator.inflate(R.layout.rowbuttonlayout, null);
 			holder = new InteresHolder();
-			holder.interesName = (TextView)view.findViewById(R.id.label);
-			holder.chkBox = (CheckBox)view.findViewById(R.id.check);
-			
-			
+			holder.interesName = (TextView) view
+					.findViewById(R.id.txt_interesi);
+			holder.chkBox = (CheckBox) view.findViewById(R.id.chk_check);
+
 			holder.chkBox.setTag(position);
 			view.setTag(holder);
-			
+
 			holder.chkBox.setOnClickListener(myListener);
-			
+
 			view.setTag(holder);
 			holder.chkBox.setTag(interesList.get(position));
-		}
-		else{
-			
+		} else {
+
 			view = convertView;
-			((InteresHolder)view.getTag()).chkBox.setTag(interesList.get(position));
-			
-		
+			((InteresHolder) view.getTag()).chkBox.setTag(interesList
+					.get(position));
+
 		}
-		
-		
+
 		InteresHolder holder2 = (InteresHolder) view.getTag();
 		holder2.chkBox.setChecked(interesList.get(position).isSelected());
 		holder2.interesName.setText(interesList.get(position).getName());
-		
+
 		return view;
-	
+
 	}
-	
+
 	private View.OnClickListener myListener = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			CheckBox ck = (CheckBox) v;
 			InteresModel interes = (InteresModel) ck.getTag();
-			
-			if(ck.isChecked()){
+
+			if (ck.isChecked()) {
 				hash.add(interes);
-					odabrano.clear();
-					odabrano.addAll(hash);		
-				Toast.makeText(context, "POdaci "+ interes.getName(), Toast.LENGTH_SHORT).show();
-			}
-			else{
-				if(odabrano.contains(interes.getName())){
+				odabrano.clear();
+				odabrano.addAll(hash);
+				Toast.makeText(context, "POdaci " + interes.getName(),
+						Toast.LENGTH_SHORT).show();
+			} else {
+				if (odabrano.contains(interes.getName())) {
 					odabrano.remove(interes.getName());
 				}
 			}
-			
-			
+
 			Log.d("ODABRANI PODACI", odabrano.toString());
-			
+
 			interes.setSelected(ck.isChecked());
 		}
 	};
 
-	private class InteresiFilter extends Filter{
+	private class InteresiFilter extends Filter {
 
 		@SuppressWarnings("unchecked")
 		@Override
-		protected void publishResults(CharSequence constraint, FilterResults results) {
+		protected void publishResults(CharSequence constraint,
+				FilterResults results) {
 			// TODO Auto-generated method stub
 			listaInteresa = (List<InteresModel>) results.values;
 			notifyDataSetChanged();
 			clear();
-			for(int i = 0, k = listaInteresa.size(); i<k; i++){
+			for (int i = 0, k = listaInteresa.size(); i < k; i++) {
 				add(listaInteresa.get(i));
 				notifyDataSetChanged();
 			}
 		}
-		
+
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
 			// TODO Auto-generated method stub
-			
+
 			constraint = constraint.toString().toLowerCase();
 			FilterResults result = new FilterResults();
-			if(constraint != null && constraint.toString().length() > 0){
+			if (constraint != null && constraint.toString().length() > 0) {
 				ArrayList<InteresModel> filtriraniInteresi = new ArrayList<InteresModel>();
-				for(int i = 0, l = interesList.size(); i<l; i++){
+				for (int i = 0, l = interesList.size(); i < l; i++) {
 					InteresModel interes = interesList.get(i);
-					if(interes.toString().toLowerCase().contains(constraint)){
+					if (interes.toString().toLowerCase().contains(constraint)) {
 						filtriraniInteresi.add(interes);
 					}
 				}
 				result.count = filtriraniInteresi.size();
 				result.values = filtriraniInteresi;
-			}
-			else{
+			} else {
 				synchronized (this) {
 					result.values = interesList;
 					result.count = interesList.size();

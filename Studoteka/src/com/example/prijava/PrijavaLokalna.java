@@ -8,6 +8,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import com.example.modeli.UcenikModel;
+
 import android.util.Log;
 
 public class PrijavaLokalna implements PrijavaSucelje {
@@ -22,7 +24,7 @@ public class PrijavaLokalna implements PrijavaSucelje {
 	}
 
 	@Override
-	public boolean prijava() {
+	public UcenikModel prijava() {
 		try {
 			// create HttpClient
 			HttpClient httpClient = new DefaultHttpClient();
@@ -57,14 +59,19 @@ public class PrijavaLokalna implements PrijavaSucelje {
 			JSONObject jo = new JSONObject(responseString.toString());
 
 			if (jo.get("status").equals(true)) {
-				return true;
+				JSONObject temp = (JSONObject) jo.get("podaci"); 
+				UcenikModel uModel = new UcenikModel();
+				uModel.setId(temp.getInt("idUcenika"));
+				uModel.setIme(temp.getString("ime"));
+				uModel.setPrezime(temp.getString("prezime"));
+				uModel.setMail(temp.getString("email"));
+				return uModel;
 			}
 
 		} catch (Exception e) {
-			Log.d("EXCEPTION LOGIN", "JEBEŠ ME" + e.toString());
+			Log.d("EXCEPTION LOGIN", e.toString());
 		}
-		return false;
+		return null;
 
 	}
-
 }

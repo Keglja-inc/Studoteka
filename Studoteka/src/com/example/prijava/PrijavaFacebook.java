@@ -1,11 +1,13 @@
 package com.example.prijava;
 
+import com.example.modeli.UcenikModel;
+
 public class PrijavaFacebook implements PrijavaSucelje {
 
 	@Override
-	public boolean prijava() {
+	public UcenikModel prijava() {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
 	

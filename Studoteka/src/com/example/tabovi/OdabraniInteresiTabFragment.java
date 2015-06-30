@@ -56,8 +56,9 @@ public class OdabraniInteresiTabFragment extends Fragment {
 				.findViewById(R.id.btn_odabrani_interesi);
 
 		SharedPreferences pref = this.getActivity().getSharedPreferences(
-				"EMAIL", getActivity().MODE_PRIVATE);
-		mail = pref.getString("POSLANI_MAIL", null);
+				"UCENIK", getActivity().MODE_PRIVATE);
+		mail = pref.getString(getResources().getString(R.string.mail_ucenik),
+				"");
 
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
@@ -72,7 +73,8 @@ public class OdabraniInteresiTabFragment extends Fragment {
 				// TODO Auto-generated method stub
 				SendInterese();
 				ProgressDialog pd = new ProgressDialog(getActivity());
-				pd.setMessage("Popis fakulteta možete vidjeti na slijedeæem tabu...");
+				pd.setMessage(getResources().getString(
+						R.string.msg_rezultat_fakulteta));
 				pd.setCancelable(true);
 				pd.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
 						new DialogInterface.OnClickListener() {
@@ -92,6 +94,7 @@ public class OdabraniInteresiTabFragment extends Fragment {
 	}
 
 	public void receiveData(ArrayList<InteresModel> data) {
+
 		list.clear();
 		list = data;
 		adapter = new ArrayAdapter<InteresModel>(getActivity(),
@@ -100,8 +103,6 @@ public class OdabraniInteresiTabFragment extends Fragment {
 	}
 
 	private void SendInterese() {
-		Log.d("ODABRANI INTERESI", list.toString());
-		Log.d("EMAIL", mail);
 		try {
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpPost httpPost = new HttpPost(this.url);
@@ -151,7 +152,7 @@ public class OdabraniInteresiTabFragment extends Fragment {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			Log.d("OVO JE E", e.toString());
+			Log.d("EXCEPTION REQUEST", e.toString());
 		}
 	}
 

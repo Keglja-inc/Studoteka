@@ -1,30 +1,29 @@
 package com.example.studoteka;
 
-import java.sql.SQLException;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.db.DBAdapter;
-import com.example.prijava.PrijavaSucelje;
+import com.example.modeli.UcenikModel;
 import com.example.prijava.PrijavaLokalna;
+import com.example.prijava.PrijavaSucelje;
 
 public class PrijavaAktivnost extends Activity {
-	private EditText username = null;
-	private EditText password = null;
-	private Button login, signup;
+	private EditText edt_email = null;
+	private EditText edt_lozinka = null;
+	private Button btn_prijava, btn_registracija;
 	private String username1, password1, email;
 
 	@Override
@@ -33,12 +32,23 @@ public class PrijavaAktivnost extends Activity {
 		super.onCreate(arg0);
 		setContentView(R.layout.login_screen);
 
-		username = (EditText) findViewById(R.id.edit_txt_email);
-		password = (EditText) findViewById(R.id.edit_txt_lozinka);
+		edt_email = (EditText) findViewById(R.id.edit_txt_email);
+		edt_lozinka = (EditText) findViewById(R.id.edit_txt_lozinka);
 
-		login = (Button) findViewById(R.id.login_button);
-		signup = (Button) findViewById(R.id.btn_signup);
-		DBAdapter.init(this);
+		btn_prijava = (Button) findViewById(R.id.btn_prijava);
+		btn_registracija = (Button) findViewById(R.id.btn_registracija);
+		
+		SharedPreferences djeljenePostavke = getSharedPreferences("UCENIK", Context.MODE_PRIVATE);
+
+		
+		String lozinka = djeljenePostavke.getString(getResources().getString(R.string.lozinka_ucenik), "");
+		String mailUcenik = djeljenePostavke.getString(getResources().getString(R.string.mail_ucenik), "");
+		
+
+		edt_email.setText((CharSequence)mailUcenik);
+		edt_lozinka.setText((CharSequence)lozinka);
+
+
 
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
@@ -46,77 +56,59 @@ public class PrijavaAktivnost extends Activity {
 			StrictMode.setThreadPolicy(policy);
 		}
 
-		login.setOnClickListener(new OnClickListener() {
+		btn_prijava.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				username1 = username.getText().toString();
-				password1 = password.getText().toString();
+				username1 = edt_email.getText().toString();
+				password1 = edt_lozinka.getText().toString();
 
 				// moraš ruèno dopisati new PrijavaLocal jer ti inaèe neda
 				PrijavaSucelje pi = (PrijavaSucelje) new PrijavaLokalna(
 						username1, password1,
 						"http://46.101.185.15/rest/3982bb6a86fec50fd20ee0c3cd6ff474f4ceb78e");
 
-				if (pi.prijava()) {
+				UcenikModel um = pi.prijava();
+				if (um != null) {
 					// nastavi s app
-					Log.d("USPJEŠNA PRIJAVA", "prijavil sam se");
+							SharedPreferences preferences = getSharedPreferences(
+									"UCENIK",
+									getApplicationContext().MODE_PRIVATE);
+							Editor editor = preferences.edit();
+							editor.putInt("id_ucenik", um.getId());
+							editor.putString("ime_ucenik", um.getIme());
+							editor.putString("prezime_ucenik", um.getPrezime());
+							editor.putString("mail_ucenik", um.getMail());
+							editor.putString("lozinka_ucenik", password1);
+		
+							editor.commit();
 
-					if (username1.length() > 0 && password1.length() > 0) {
-						try {
-							if (DBAdapter.checkUser(username1, password1)) {
-
-								email = DBAdapter.getProfilData(password1);
-
-								SharedPreferences preferences = getSharedPreferences(
-										"EMAIL",
-										getApplicationContext().MODE_PRIVATE);
-								Editor editor = preferences.edit();
-								editor.putString("POSLANI_MAIL", email);
-								editor.commit();
-
-								ProgressDialog pd = new ProgressDialog(
-										PrijavaAktivnost.this);
-								pd.setMessage("Loading... please wait");
-								pd.setCancelable(true);
-								pd.show();
-							}
-
-							Bundle novi = new Bundle();
-							novi.putString("prijenos", username1);
+							ProgressDialog pd = new ProgressDialog(
+									PrijavaAktivnost.this);
+							pd.setMessage(getResources().getString(
+									R.string.msg_prijava_ucitavanje));
+							pd.setCancelable(true);
+							pd.show();
+							
 
 							Intent i = new Intent(getApplicationContext(),
 									GlavnaAktivnost.class);
-							i.putExtras(novi);
 							startActivity(i);
-
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
-					} else {
+				 else {
 						ProgressDialog pd = new ProgressDialog(
 								PrijavaAktivnost.this);
-						pd.setMessage("Wrong credentials...Please try again!");
+						pd.setMessage(getResources().getString(
+								R.string.msg_prijava_neuspjeh));
 						pd.setCancelable(true);
 						pd.show();
 					}
-				}
 
-				else {
-					// javi da nekaj ne valja
-					Log.d("NEUSPJEŠNA PRIJAVA", "sjebali smo nekaj");
-					ProgressDialog pd = new ProgressDialog(
-							PrijavaAktivnost.this);
-					pd.setMessage("Something has gone terrible wrong!!!Try again later...");
-					pd.setCancelable(true);
-					pd.show();
-				}
-
-			}
-		});
-		signup.setOnClickListener(new OnClickListener() {
+		
+			}});
+		
+		btn_registracija.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -127,5 +119,5 @@ public class PrijavaAktivnost extends Activity {
 			}
 		});
 	}
-
 }
+

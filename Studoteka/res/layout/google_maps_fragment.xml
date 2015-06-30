@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="#FFFFFF"
+    android:gravity="center" >
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="120dp" />
+
+    <Button
+        android:id="@+id/btn_web_stranica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/map"
+        android:layout_alignRight="@+id/map"
+        android:layout_below="@+id/btn_restorani"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/custom_button_design"
+        android:text="@string/btn_web_stranica"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/btn_restorani"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/web_stranica"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_button_design"
+        android:onClick="onClickRestorani"
+        android:text="@string/btn_restorani"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/btn_kulturni_sadržaj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_web_stranica"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/custom_button_design"
+        android:onClick="onClickKulturniSadrzaj"
+        android:text="@string/btn_kulturni_sadrzaj"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>

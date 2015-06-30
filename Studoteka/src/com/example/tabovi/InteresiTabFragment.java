@@ -16,7 +16,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,7 +63,7 @@ public class InteresiTabFragment extends Fragment {
 
 		interesLista = new ArrayList<InteresModel>();
 		lv = (ListView) view.findViewById(R.id.interesi_lista);
-		ck = (CheckBox) view.findViewById(R.id.check);
+		ck = (CheckBox) view.findViewById(R.id.chk_check);
 		inputSearch = (EditText) view.findViewById(R.id.edt_inputSearch);
 		btn = (Button) view.findViewById(R.id.btn_odabrani_interesi);
 		adapter = new InteresiAdapter(dohvaceniPodaci(), getActivity());
@@ -80,10 +79,11 @@ public class InteresiTabFragment extends Fragment {
 				// TODO Auto-generated method stub
 
 				primljeno = adapter.odabrano;
-				
-				if(primljeno == null || primljeno.isEmpty()){
+
+				if (primljeno == null || primljeno.isEmpty()) {
 					ProgressDialog pd = new ProgressDialog(getActivity());
-					pd.setMessage("Niste odabrali niti jedan interes1");
+					pd.setMessage(getResources().getString(
+							R.string.msg_neodabrani_interesi));
 					pd.setCancelable(true);
 					pd.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
 							new DialogInterface.OnClickListener() {
@@ -95,14 +95,15 @@ public class InteresiTabFragment extends Fragment {
 									dialog.dismiss();
 								}
 							});
-					pd.show();					
+					pd.show();
 					return;
-					
+
 				}
 				comm.SendData(primljeno);
 
 				ProgressDialog pd = new ProgressDialog(getActivity());
-				pd.setMessage("Odabrane interese možete vidjeti na slijedeæem tabu...");
+				pd.setMessage(getResources().getString(
+						R.string.msg_odabrani_interesi));
 				pd.setCancelable(true);
 				pd.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
 						new DialogInterface.OnClickListener() {
@@ -115,8 +116,6 @@ public class InteresiTabFragment extends Fragment {
 							}
 						});
 				pd.show();
-
-				Log.d("PODACI", primljeno.toString());
 
 			}
 		});
@@ -195,10 +194,8 @@ public class InteresiTabFragment extends Fragment {
 								interes = new InteresModel(naziv);
 								interes.setName(naziv);
 								interes.setId(jsObj.getInt("idInteresa"));
-								// interesLista.add(interes);
 								inter.add(interes);
 							}
-							Log.d("PODACI", interesLista.toString());
 
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block

@@ -95,7 +95,7 @@ public class RegistracijaLokalna {
 				return true;
 			}
 		} catch (Exception e) {
-			Log.d("EXCEPTION LOGIN", "JEBEŠ ME"+e.toString());
+			Log.d("EXCEPTION LOGIN", e.toString());
 		}
 		return false;
 	}	

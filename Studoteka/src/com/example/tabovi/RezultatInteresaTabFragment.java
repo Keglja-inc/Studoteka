@@ -37,11 +37,12 @@ public class RezultatInteresaTabFragment extends Fragment {
 	}
 
 	public void receiveData2(ArrayList<FakultetModel> data) {
-		list.clear();
+	//	list.clear();
 		list = data;
 
 		fAdapter = new FakultetListAdapter(getActivity(), list);
 		lista_fakulteta.setAdapter(fAdapter);
+		fAdapter.notifyDataSetChanged();
 
 		lista_fakulteta.setOnItemClickListener(new OnItemClickListener() {
 

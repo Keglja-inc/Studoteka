@@ -37,7 +37,7 @@
         android:textSize="25sp" />
 
       <Button
-          android:id="@+id/login_button"
+          android:id="@+id/btn_prijava"
           android:layout_width="match_parent"
           android:layout_height="100dp"
           android:layout_margin="@dimen/com_facebook_likeview_internal_padding"
@@ -47,7 +47,7 @@
           android:textSize="@dimen/VelicinaTextaLogin" />
       
     <Button
-        android:id="@+id/btn_signup"
+        android:id="@+id/btn_registracija"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_margin="@dimen/com_facebook_likeview_internal_padding"

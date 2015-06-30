@@ -16,18 +16,18 @@ public class AboutUs extends Fragment{
 	@SuppressWarnings("unused")
 	private ImageView logo;
 	@SuppressWarnings("unused")
-	private TextView opis,dev;
+	private TextView txt_opis,txt_developeri;
 	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.o_nama, container, false);
+		view = inflater.inflate(R.layout.o_nama_fragment, container, false);
 		
 		logo=(ImageView)view.findViewById(R.id.img_ikona);
 		
-		opis=(TextView)view.findViewById(R.id.txt_opis_aplikacije);
-		dev=(TextView)view.findViewById(R.id.txt_developeri	);
+		txt_opis=(TextView)view.findViewById(R.id.txt_opis_aplikacije);
+		txt_developeri=(TextView)view.findViewById(R.id.txt_developeri	);
 		
 		
 		return view;

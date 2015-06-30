@@ -8,7 +8,7 @@ import com.example.tabovi.InteresiTabFragment;
 import com.example.tabovi.OdabraniInteresiTabFragment;
 import com.example.tabovi.RezultatInteresaTabFragment;
 
-public class TabsPagerAdapter extends FragmentPagerAdapter{
+public class TabsPagerAdapter extends FragmentPagerAdapter {
 	public TabsPagerAdapter(FragmentManager fm) {
 		super(fm);
 		// TODO Auto-generated constructor stub

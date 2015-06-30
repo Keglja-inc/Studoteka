@@ -26,7 +26,7 @@ public class AnimacijaFragment extends Fragment{
 		
 		anim=AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
 		
-		image=(ImageView)view.findViewById(R.id.rotatepicture);
+		image=(ImageView)view.findViewById(R.id.img_rotate_picture);
 		
 		this.view.setVisibility(View.VISIBLE);
 		image.startAnimation(anim);

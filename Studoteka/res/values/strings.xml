@@ -12,15 +12,26 @@
     <string name="poruka_email">Upišite e - mail adresu</string>
     <string name="password">Lozinka:</string>
     
+    <!-- stringovi za profil fragment -->
+    <string name="id_ucenik">id_ucenik</string>
+    <string name="ime_ucenik">ime_ucenik</string>
+    <string name="prezime_ucenik">prezime_ucenik</string>
+    <string name="mail_ucenik">mail_ucenik</string>
+    <string name="lozinka_ucenik">lozinka_ucenik</string>
+
+    
     <string name="btn_login">Prijava</string>
+    <string name="txt_ucenik_id">ID učenika: </string>
     <string name="btn_signup">Registracija</string>
-    <string name="btn_spremi">"  Spremi  "</string>
-    <string name="btn_odustani">" Odustani "</string>
+    <string name="btn_spremi">Spremi</string>
+    <string name="btn_azuriraj">Ažuriraj profil</string>
+    <string name="btn_odustani">Odustani</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Pretraži interese</string>
     <string name="search_hint_fakulteti">Pretraži fakultete</string>
     <string name="osobni_interesi">"Odabrani interesi"</string>
 
+    <!-- polje stringova koji predstavljaju elemente navigacijske ladice -->
     <string-array name="nav_drawer_items">
         <item >Novosti</item>
         <item >Pronađi fakultet</item>
@@ -31,6 +42,7 @@
         <item >Odjava</item>
     </string-array>
     
+    <!-- stringovi u kojima su definirani API ključevi za Facebook i Google mape -->
     <string name="FACEBOOK_APP_ID">1641911779376167</string>
     <string name="GOOGLE_API_KEY">AIzaSyAqFo0Zec8S1W9OLy-MZONv72mmH2-Pzjs</string>
     
@@ -39,7 +51,7 @@
     <string name="omoguci">Opis</string>
     <string name="pristupanjeserveru">opis treci</string>
     
-    
+    <!-- stringovi koji se koriste kod aktivnosti RegistracijaAktivnost -->
     <string name="poruka_ime_korisnika">Upišite ime </string>
     <string name="poruka_prezime_korisnika">Upišite prezime </string>
     <string name="poruka_mail_adresa">Upišite E - mail </string>
@@ -48,6 +60,7 @@
     
     <string name="Slika">Opis slike</string>
     
+    <!-- stringovi za fragment "O nama" -->
     <string name="opis_app" >Aplikacija je napravljena u svrhu kako bi pomogla budućim studentima oko odabira sveučilište te fakulteta. Svaki korisnik aplikacije može pregledavati sveučilišta i fakultete. Ako neki korisnik aplikacije već unaprijed zna koji su njegovi interesi, može odabrati interese te će mu aplikacija sama vratiti popis fakulteta koji najbolje odgovaraju njegovim interesima.</string>
     <string name="developeri">Aplikaciju su izradili:   \nAlen Kostanjevec\nIvan Rostohar\nDeni Slunjski\nDavorin Špičko</string>
     
@@ -55,13 +68,30 @@
     
     <string name="user">User</string>
     
-    
+    <!-- stringovi za aktivnost GoogleMapAktivnost -->
     <string name="btn_web_stranica">Web fakulteta</string>
     <string name="btn_restorani">Restorani u blizini</string>
     <string name="btn_kulturni_sadrzaj">Kazališta u blizini</string>
-    <string name="google_mapa">Mapa</string>
-    <string name="mapa_summary">Odabir google mape</string>
     
     
+    <!-- stringovi poruka i obavjesti -->
+    <string name="msg_kreiraj_mapu_error">Nemoguće kreirati mapu!\nMolimo pokušajte kasnije</string>
+    <string name="msg_prijava_ucitavanje">Učitavanje podataka, molimo pričekajte....</string>
+    <string name="msg_prijava_neuspjeh">Neuspješna prijava.\nProvjerite unešene podatke i/ili pokušajte ponovno!</string>
+    <string name="msg_uspjesna_registracija">Uspješno ste se registrirali!\nSada možete izvršiti prijavu....</string>
+    <string name="msg_neuspjesna_registracija">Registracija neuspješna!\nProvjerite unešene podatke i/ili pokušajte ponovno!</string>
+    <string name="msg_odjava">Da li se želite odjaviti iz aplikacija?</string>
+    <string name="msg_neodabrani_interesi">Niste odabrali interese!</string>
+    <string name="msg_odabrani_interesi">Odabrane interese možete pregledati na sljedećem tabu.....</string>
+    <string name="msg_rezultat_fakulteta">Popis fakulteta po odabranim interesima možete vidjeti na sljedećem tabu.....</string>
+    <string name="msg_azuriranje_greska">Neočekivana pogreška kod ažuriranja!.....</string>
+    
+    <!-- stringovi za settings fragment -->
+    <string name="sett_korisnicki_podaci_summary">Želite li da se pamte korisnički podaci kod sljedeće prijave</string>
+    <string name="sett_korisnicki_podaci_title">Zapamti korisničke podatke</string>
+    <string name="sett_google_mapa_title">Mapa</string>
+    <string name="sett_mapa_summary">Odabir google mape</string>
+    <string name="sett_pamti_posljednji_izracun_title">Zapamti zadnje rezultate</string>
+    <string name="sett_pamti_posljednji_izracun_summary">Želite li da se pamte podaci o zadnjem popisu fakulteta po odabranim interesima</string>
     
 </resources>

@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/txt_nazivFakulteta"
+        android:id="@+id/txt_naziv_fakulteta"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/txt_postotak"

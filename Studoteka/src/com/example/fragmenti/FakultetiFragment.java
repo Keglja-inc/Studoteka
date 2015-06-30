@@ -120,7 +120,8 @@ public class FakultetiFragment extends Fragment {
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				// TODO Auto-generated method stub
-				((Filterable) FakultetiFragment.this.adapter).getFilter().filter(s);
+				((Filterable) FakultetiFragment.this.adapter).getFilter()
+						.filter(s);
 			}
 
 			@Override
@@ -160,8 +161,7 @@ public class FakultetiFragment extends Fragment {
 								model.setNaziv(naziv);
 								model.SetUrl(url);
 								fakulteti.add(model);
-								Log.d("FAKULTETI", fakulteti.toString());
-								Log.d("URL", url_fakulteti.toString());
+
 							}
 
 						} catch (Exception e) {

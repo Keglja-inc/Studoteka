@@ -1,6 +1,8 @@
 package com.example.modeli;
 
-public class UcenikModel {
+import java.io.Serializable;
+
+public class UcenikModel implements Serializable {
 
 	private int id;
 	private String ime, prezime, mail, lozinka;
