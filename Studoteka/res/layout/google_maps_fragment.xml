@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/map"
         android:layout_alignRight="@+id/map"
+        android:layout_alignStart="@+id/map"
         android:layout_below="@+id/btn_restorani"
         android:layout_marginTop="5dp"
         android:background="@drawable/custom_button_design"
@@ -30,28 +31,29 @@
         android:textColor="#FFFFFF" />
 
     <Button
-        android:id="@+id/btn_restorani"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/web_stranica"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_button_design"
-        android:onClick="onClickRestorani"
-        android:text="@string/btn_restorani"
-        android:textColor="#FFFFFF" />
-
-    <Button
         android:id="@+id/btn_kulturni_sadržaj"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_web_stranica"
+        android:layout_alignParentEnd="false"
         android:layout_alignParentRight="true"
+        android:layout_marginEnd="10dp"
         android:layout_marginRight="5dp"
         android:background="@drawable/custom_button_design"
         android:onClick="onClickKulturniSadrzaj"
         android:text="@string/btn_kulturni_sadrzaj"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/btn_restorani"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/custom_button_design"
+        android:onClick="onClickRestorani"
+        android:text="@string/btn_restorani"
         android:textColor="#FFFFFF" />
 
 </RelativeLayout>

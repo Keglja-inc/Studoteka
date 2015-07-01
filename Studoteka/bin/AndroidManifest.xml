@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.studoteka"
+    package="hr.foi.air.studoteka"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -30,13 +30,13 @@
         android:required="true" />
 
     <application
-        android:name="com.example.volley.AppController"
+        android:name="hr.foi.air.volley.AppController"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.studoteka.OdabirPrijaveAktivnost"
+            android:name="hr.foi.air.studoteka.OdabirPrijaveAktivnost"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,15 +45,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PrijavaAktivnost"
+            android:name="hr.foi.air.studoteka.PrijavaAktivnost"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".RegistracijaAktivnost"
+            android:name="hr.foi.air.studoteka.RegistracijaAktivnost"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".GlavnaAktivnost"
+            android:name="hr.foi.air.studoteka.GlavnaAktivnost"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
@@ -63,13 +63,13 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.tabovi.TabsInteresiAktivnost"
+            android:name="hr.foi.air.tabovi.TabsInteresiAktivnost"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
         <activity
-            android:name="com.example.studoteka.GoogleMapAktivnost"
+            android:name="hr.foi.air.studoteka.GoogleMapAktivnost"
             android:label="@string/title_activity_google_map"
             android:screenOrientation="portrait" >
         </activity>
