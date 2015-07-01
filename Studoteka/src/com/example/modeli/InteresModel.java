@@ -2,16 +2,31 @@ package com.example.modeli;
 
 import java.io.Serializable;
 
-public class InteresModel implements Serializable{
-	private String name;
+/**
+ * Klasa u kojoj su definirani get i set metode za objekte tipa InteresiModel
+ * @author Ivan
+ *
+ */
+public class InteresModel implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String naziv;
 	private Integer id;
 	private boolean selected = false;
-	
-	public InteresModel(String name) {
+
+	public InteresModel(String naziv) {
 		super();
-		this.name = name;
+		this.naziv = naziv;
 	}
-	
+
+	public InteresModel(Integer id, String naziv) {
+		super();
+		this.id = id;
+		this.naziv = naziv;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -23,15 +38,19 @@ public class InteresModel implements Serializable{
 	public InteresModel() {
 		// TODO Auto-generated constructor stub
 	}
-	public String getName() {
-		return name;
+
+	public String getNaziv() {
+		return naziv;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
 	}
+
 	public boolean isSelected() {
 		return selected;
 	}
+
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
@@ -39,6 +58,6 @@ public class InteresModel implements Serializable{
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return name;
+		return naziv;
 	}
 }

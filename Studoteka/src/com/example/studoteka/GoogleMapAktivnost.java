@@ -12,7 +12,6 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,33 +26,39 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * Klasa u kojoj su implementirane funkcionalnosti vezane uz prikaz i korištenje
+ * google mapa
+ * 
+ * @author Ivan
+ *
+ */
 public class GoogleMapAktivnost extends FragmentActivity {
 
-	private Button btn, btn_kazalista, btn_restorani;
+	private Button btn;
 	private GoogleMap googleMap;
-	private FakultetModel fakultet;
+	private FakultetModel fakultetModel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.google_maps_fragment);
 
-		fakultet = (FakultetModel) getIntent()
-				.getSerializableExtra("fakulteti");
+		fakultetModel = (FakultetModel) getIntent().getSerializableExtra(
+				"fakulteti");
 
-		SharedPreferences opcije = getSharedPreferences("OPTIONS", Context.MODE_PRIVATE);
-		
-		
+		SharedPreferences opcije = getSharedPreferences("OPTIONS",
+				Context.MODE_PRIVATE);
+
 		addListenerOnButton();
 
 		try {
 			if (googleMap == null) {
 				googleMap = ((MapFragment) getFragmentManager()
 						.findFragmentById(R.id.map)).getMap();
-				
+
 				String tip = opcije.getString("tip_mape", "");
-				Log.d("TIP", tip);
-				
+
 				if (tip.equals("Normalna")) {
 					googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 				} else if (tip.equals("Hibridna")) {
@@ -63,18 +68,19 @@ public class GoogleMapAktivnost extends FragmentActivity {
 				} else if (tip.equals("Zemljišna")) {
 					googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 				}
-				
+
 				// MapFragment
 				// mapFragment=(MapFragment)getFragmentManager().findFragmentById(R.id.map);
 				// mapFragment.getMapAsync(this);
 
-				LatLng lokacija = getLocationFromAddress(fakultet.getNaziv());
+				LatLng lokacija = getLocationFromAddress(fakultetModel
+						.getNaziv());
 				CameraUpdate update = CameraUpdateFactory.newLatLngZoom(
 						lokacija, 17);
 				googleMap
 						.addMarker(new MarkerOptions()
 								.position(lokacija)
-								.title(fakultet.getNaziv())
+								.title(fakultetModel.getNaziv())
 								.icon(BitmapDescriptorFactory
 										.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 				googleMap.animateCamera(update);
@@ -93,17 +99,27 @@ public class GoogleMapAktivnost extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * Omoguæuje prikaz obližnjih restorana odabranog fakulteta na mapi
+	 * 
+	 * @param v
+	 */
 	public void onClickRestorani(View v) {
 		Uri intentRestorani = Uri.parse("geo:0,0?q=restaurants,"
-				+ fakultet.getNaziv());
+				+ fakultetModel.getNaziv());
 		Intent mapIntent = new Intent(Intent.ACTION_VIEW, intentRestorani);
 		mapIntent.setPackage("com.google.android.apps.maps");
 		startActivity(mapIntent);
 	}
 
+	/**
+	 * Omoguæuje prikaz obližnjih kazališta odabranog fakulteta na mapi
+	 * 
+	 * @param v
+	 */
 	public void onClickKulturniSadrzaj(View v) {
 		Uri intentRestorani = Uri.parse("geo:0,0?q=theaters,"
-				+ fakultet.getNaziv());
+				+ fakultetModel.getNaziv());
 		Intent mapIntent = new Intent(Intent.ACTION_VIEW, intentRestorani);
 		mapIntent.setPackage("com.google.android.apps.maps");
 		startActivity(mapIntent);
@@ -117,13 +133,20 @@ public class GoogleMapAktivnost extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse(fakultet.getUrl()));
+						.parse(fakultetModel.getUrl()));
 				startActivity(intent);
 
 			}
 		});
 	}
 
+	/**
+	 * Na temelju imena lokacije raèuna geografsku dužinu i širinu
+	 * 
+	 * @param strAddress
+	 *            Lokacija za koju želimo dobiti geogravsku širinu i dužinu
+	 * @return Geogravsku širinu i dužinu lokacije
+	 */
 	public LatLng getLocationFromAddress(String strAddress) {
 
 		Geocoder coder = new Geocoder(this, Locale.ENGLISH);

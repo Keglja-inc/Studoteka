@@ -13,6 +13,13 @@ import android.preference.PreferenceManager;
 
 import com.example.studoteka.R;
 
+/**
+ * Klasa u kojoj su definirane postavke koje korisnik može mijenjati za
+ * personalizirano korištenje aplikacije
+ * 
+ * @author Deni
+ *
+ */
 public class SettingsFragment extends PreferenceFragment {
 
 	private SharedPreferences opcije;
@@ -23,9 +30,6 @@ public class SettingsFragment extends PreferenceFragment {
 
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.main_preferences);
-
-		SharedPreferences sharedPref = getPreferenceScreen()
-				.getSharedPreferences();
 
 		PreferenceManager.setDefaultValues(getActivity(),
 				R.xml.main_preferences, false);

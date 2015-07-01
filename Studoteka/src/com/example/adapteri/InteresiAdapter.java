@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +19,12 @@ import android.widget.Toast;
 import com.example.modeli.InteresModel;
 import com.example.studoteka.R;
 
+/**
+ * Adapter u kojemu je definiran prikaz interesa u fragmentu InteresiTabFragment
+ * 
+ * @author Ivan
+ *
+ */
 public class InteresiAdapter extends ArrayAdapter<InteresModel> {
 
 	private List<InteresModel> interesList;
@@ -50,6 +56,7 @@ public class InteresiAdapter extends ArrayAdapter<InteresModel> {
 
 	}
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
@@ -81,7 +88,7 @@ public class InteresiAdapter extends ArrayAdapter<InteresModel> {
 
 		InteresHolder holder2 = (InteresHolder) view.getTag();
 		holder2.chkBox.setChecked(interesList.get(position).isSelected());
-		holder2.interesName.setText(interesList.get(position).getName());
+		holder2.interesName.setText(interesList.get(position).getNaziv());
 
 		return view;
 
@@ -99,20 +106,19 @@ public class InteresiAdapter extends ArrayAdapter<InteresModel> {
 				hash.add(interes);
 				odabrano.clear();
 				odabrano.addAll(hash);
-				Toast.makeText(context, "POdaci " + interes.getName(),
+				Toast.makeText(context, "POdaci " + interes.getNaziv(),
 						Toast.LENGTH_SHORT).show();
 			} else {
-				if (odabrano.contains(interes.getName())) {
-					odabrano.remove(interes.getName());
+				if (odabrano.contains(interes.getNaziv())) {
+					odabrano.remove(interes.getNaziv());
 				}
 			}
-
-			Log.d("ODABRANI PODACI", odabrano.toString());
 
 			interes.setSelected(ck.isChecked());
 		}
 	};
 
+	@SuppressLint("DefaultLocale")
 	private class InteresiFilter extends Filter {
 
 		@SuppressWarnings("unchecked")
@@ -129,6 +135,7 @@ public class InteresiAdapter extends ArrayAdapter<InteresModel> {
 			}
 		}
 
+		@SuppressLint("DefaultLocale")
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
 			// TODO Auto-generated method stub
@@ -136,7 +143,6 @@ public class InteresiAdapter extends ArrayAdapter<InteresModel> {
 			constraint = constraint.toString().toLowerCase();
 			FilterResults result = new FilterResults();
 			if (constraint != null && constraint.toString().length() > 0) {
-				ArrayList<InteresModel> filtriraniInteresi = new ArrayList<InteresModel>();
 				for (int i = 0, l = interesList.size(); i < l; i++) {
 					InteresModel interes = interesList.get(i);
 					if (interes.toString().toLowerCase().contains(constraint)) {

@@ -12,7 +12,14 @@ import com.example.fragmenti.FacebookPrijavaFragment;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
 
-public class OdabirPrijaveAktivnost extends FragmentActivity implements OnClickListener {
+/**
+ * Klasa u kojoj se radi odabir prijave korisnika
+ * 
+ * @author Ivan
+ *
+ */
+public class OdabirPrijaveAktivnost extends FragmentActivity implements
+		OnClickListener {
 	private Button btn_login_obicni;
 	private LoginButton face_button;
 	private FacebookPrijavaFragment fl;
@@ -37,7 +44,8 @@ public class OdabirPrijaveAktivnost extends FragmentActivity implements OnClickL
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn_login_obicno:
-			Intent i = new Intent(getApplicationContext(), PrijavaAktivnost.class);
+			Intent i = new Intent(getApplicationContext(),
+					PrijavaAktivnost.class);
 			startActivity(i);
 
 		case R.id.login_button:

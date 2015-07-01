@@ -2,8 +2,17 @@ package com.example.modeli;
 
 import java.io.Serializable;
 
+/**
+ * Klasa u kojoj su definirani get i set metode za objekte tipa UcenikModel
+ * @author Ivan
+ *
+ */
 public class UcenikModel implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String ime, prezime, mail, lozinka;
 

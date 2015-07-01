@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -37,20 +36,24 @@ import com.example.studoteka.R;
 import com.example.sucelja.TabSucelje;
 import com.example.volley.AppController;
 
+/**
+ * Klasa u kojoj su implementirane i prikazane funkionalnosti za dohvat i prikaz
+ * interesa svih fakulteta
+ * 
+ * @author Ivan
+ *
+ */
 public class InteresiTabFragment extends Fragment {
 	private View view;
-	private ListView lv;
-	private Button btn;
-	private EditText inputSearch;
-	private ArrayList<InteresModel> interesLista;
-	private InteresiAdapter adapter;
-	private InteresModel interes;
-	private CheckBox ck;
+	private ListView lv_interesi;
+	private Button btn_proslijedi_interese;
+	private EditText edt_input_search;
+	private InteresiAdapter interesiAdapter;
+	private InteresModel interesModel;
 	public static final String url = "http://46.101.185.15/rest/13275cf47a74867fa3d5c02d7719e1ff28e011ba";
-	private List<InteresModel> inter = new ArrayList<InteresModel>();
-	private SwipeRefreshLayout refreshLayout;
-	private ArrayList<InteresModel> searchResult = new ArrayList<InteresModel>();
-	private ArrayList<InteresModel> primljeno = new ArrayList<InteresModel>();
+	private List<InteresModel> dohvaceniInteresiLista = new ArrayList<InteresModel>();
+	private SwipeRefreshLayout srl_refresh_layout;
+	private ArrayList<InteresModel> odabraniInteresiLista = new ArrayList<InteresModel>();
 
 	TabSucelje comm;
 
@@ -61,26 +64,27 @@ public class InteresiTabFragment extends Fragment {
 
 		view = inflater.inflate(R.layout.interesi_lista, container, false);
 
-		interesLista = new ArrayList<InteresModel>();
-		lv = (ListView) view.findViewById(R.id.interesi_lista);
-		ck = (CheckBox) view.findViewById(R.id.chk_check);
-		inputSearch = (EditText) view.findViewById(R.id.edt_inputSearch);
-		btn = (Button) view.findViewById(R.id.btn_odabrani_interesi);
-		adapter = new InteresiAdapter(dohvaceniPodaci(), getActivity());
-		refreshLayout = (SwipeRefreshLayout) view
+		lv_interesi = (ListView) view.findViewById(R.id.interesi_lista);
+		edt_input_search = (EditText) view.findViewById(R.id.edt_inputSearch);
+		btn_proslijedi_interese = (Button) view
+				.findViewById(R.id.btn_odabrani_interesi);
+		interesiAdapter = new InteresiAdapter(dohvaceniPodaci(), getActivity());
+		srl_refresh_layout = (SwipeRefreshLayout) view
 				.findViewById(R.id.swipe_refresh_interesi);
-		refreshLayout.setColorSchemeResources(android.R.color.background_dark,
-				android.R.color.holo_purple, android.R.color.holo_blue_bright,
+		srl_refresh_layout.setColorSchemeResources(
+				android.R.color.background_dark, android.R.color.holo_purple,
+				android.R.color.holo_blue_bright,
 				android.R.color.holo_green_light);
-		btn.setOnClickListener(new OnClickListener() {
+		btn_proslijedi_interese.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				primljeno = adapter.odabrano;
+				odabraniInteresiLista = interesiAdapter.odabrano;
 
-				if (primljeno == null || primljeno.isEmpty()) {
+				if (odabraniInteresiLista == null
+						|| odabraniInteresiLista.isEmpty()) {
 					ProgressDialog pd = new ProgressDialog(getActivity());
 					pd.setMessage(getResources().getString(
 							R.string.msg_neodabrani_interesi));
@@ -99,7 +103,7 @@ public class InteresiTabFragment extends Fragment {
 					return;
 
 				}
-				comm.SendData(primljeno);
+				comm.SendData(odabraniInteresiLista);
 
 				ProgressDialog pd = new ProgressDialog(getActivity());
 				pd.setMessage(getResources().getString(
@@ -120,9 +124,9 @@ public class InteresiTabFragment extends Fragment {
 			}
 		});
 
-		lv.setAdapter(adapter);
+		lv_interesi.setAdapter(interesiAdapter);
 
-		lv.setOnScrollListener(new OnScrollListener() {
+		lv_interesi.setOnScrollListener(new OnScrollListener() {
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -135,13 +139,13 @@ public class InteresiTabFragment extends Fragment {
 					int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
 				if (firstVisibleItem == 0)
-					refreshLayout.setEnabled(true);
+					srl_refresh_layout.setEnabled(true);
 				else
-					refreshLayout.setEnabled(false);
+					srl_refresh_layout.setEnabled(false);
 			}
 		});
 
-		refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+		srl_refresh_layout.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
 			public void onRefresh() {
@@ -151,7 +155,7 @@ public class InteresiTabFragment extends Fragment {
 			}
 		});
 
-		inputSearch.addTextChangedListener(new TextWatcher() {
+		edt_input_search.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
@@ -159,7 +163,7 @@ public class InteresiTabFragment extends Fragment {
 				// TODO Auto-generated method stub
 
 				// ne dela baš najbolje
-				adapter.getFilter().filter(s.toString());
+				interesiAdapter.getFilter().filter(s.toString());
 			}
 
 			@Override
@@ -179,6 +183,11 @@ public class InteresiTabFragment extends Fragment {
 		return view;
 	}
 
+	/**
+	 * Dohvaæanje naziva i ID - a interesa
+	 * 
+	 * @return Listu objekata tipa InteresModel
+	 */
 	private List<InteresModel> dohvaceniPodaci() {
 		JsonObjectRequest objRq = new JsonObjectRequest(Method.GET, url, null,
 				new Response.Listener<JSONObject>() {
@@ -191,10 +200,10 @@ public class InteresiTabFragment extends Fragment {
 							for (int i = 0; i < jsArray.length(); i++) {
 								JSONObject jsObj = (JSONObject) jsArray.get(i);
 								String naziv = jsObj.getString("naziv");
-								interes = new InteresModel(naziv);
-								interes.setName(naziv);
-								interes.setId(jsObj.getInt("idInteresa"));
-								inter.add(interes);
+								interesModel = new InteresModel(naziv);
+								interesModel.setNaziv(naziv);
+								interesModel.setId(jsObj.getInt("idInteresa"));
+								dohvaceniInteresiLista.add(interesModel);
 							}
 
 						} catch (JSONException e) {
@@ -202,7 +211,7 @@ public class InteresiTabFragment extends Fragment {
 							e.printStackTrace();
 						}
 
-						adapter.notifyDataSetChanged();
+						interesiAdapter.notifyDataSetChanged();
 					}
 				}, new Response.ErrorListener() {
 
@@ -214,7 +223,7 @@ public class InteresiTabFragment extends Fragment {
 				});
 
 		AppController.getInstance().addToRequestQueue(objRq);
-		return inter;
+		return dohvaceniInteresiLista;
 	}
 
 	@Override

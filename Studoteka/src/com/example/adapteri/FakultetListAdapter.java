@@ -1,17 +1,23 @@
 package com.example.adapteri;
 
 import java.util.ArrayList;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import com.example.modeli.FakultetModel;
 import com.example.studoteka.R;
 
+/**
+ * Adapter u kojem je definiran prikaz fakulteta i postotka podudarnosti
+ * interesa tog fakulteta
+ * 
+ * @author Ivan
+ *
+ */
 public class FakultetListAdapter extends ArrayAdapter<FakultetModel> {
 
 	private Activity activity;
@@ -24,6 +30,7 @@ public class FakultetListAdapter extends ArrayAdapter<FakultetModel> {
 		this.fakultetiModel = fakultetiModel;
 	}
 
+	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
@@ -37,8 +44,6 @@ public class FakultetListAdapter extends ArrayAdapter<FakultetModel> {
 
 		txt_nazivFakulteta.setText(fakultetiModel.get(position).getNaziv());
 		txt_postotak.setText(fakultetiModel.get(position).getPostotak() + " %");
-
-		FakultetModel fm = fakultetiModel.get(position);
 
 		return rowView;
 	}

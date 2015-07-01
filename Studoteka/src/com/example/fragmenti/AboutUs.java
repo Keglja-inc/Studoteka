@@ -10,6 +10,11 @@ import android.widget.TextView;
 
 import com.example.studoteka.R;
 
+/**
+ * Klasa u kojemu je definirana funkcionalnost fragmenta "O nama" te je definirana povezanost s pripadnim layoutom
+ * @author Deni
+ *
+ */
 public class AboutUs extends Fragment{
 	
 	private View view;

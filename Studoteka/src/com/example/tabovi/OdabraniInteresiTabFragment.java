@@ -1,6 +1,7 @@
 package com.example.tabovi;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,21 +29,31 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
+import com.example.db.DBInteres;
 import com.example.modeli.FakultetModel;
 import com.example.modeli.InteresModel;
 import com.example.studoteka.R;
 import com.example.sucelja.TabSucelje;
 
+/**
+ * Klasa u kojoj su implementirane funkcionalnosti i prikaz odabranih interesa
+ * 
+ * @author Ivan
+ *
+ */
 public class OdabraniInteresiTabFragment extends Fragment {
 	private View view;
-	private ListView list_osobni_int;
+	private ListView ls_odabrani_interesi;
 	private Button btn_izracunaj_interese;
-	private ArrayAdapter<InteresModel> adapter;
+	private ArrayAdapter<InteresModel> interesiAdapter;
 	private String mail;
-	private ArrayList<InteresModel> list = new ArrayList<InteresModel>();
-	private FakultetModel fm;
-	private ArrayList<FakultetModel> listaFM = new ArrayList<FakultetModel>();
+	private ArrayList<InteresModel> odabraniInteresiLista = new ArrayList<InteresModel>();
+	private FakultetModel fakultetiModel;
+	private ArrayList<FakultetModel> dohvaceniFakultetiLista = new ArrayList<FakultetModel>();
 	private String url = "http://46.101.185.15/rest/37ecc108d4142d31b0bac403328b644ab2cf6b9d";
+	SharedPreferences pref, opcije;
 
 	TabSucelje com2;
 
@@ -50,15 +62,32 @@ public class OdabraniInteresiTabFragment extends Fragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		view = inflater.inflate(R.layout.odabrani_interesi, container, false);
-		list_osobni_int = (ListView) view
+		ls_odabrani_interesi = (ListView) view
 				.findViewById(R.id.list_osobni_interesi);
 		btn_izracunaj_interese = (Button) view
 				.findViewById(R.id.btn_odabrani_interesi);
 
-		SharedPreferences pref = this.getActivity().getSharedPreferences(
-				"UCENIK", getActivity().MODE_PRIVATE);
+		pref = this.getActivity().getSharedPreferences("UCENIK",
+				Context.MODE_PRIVATE);
 		mail = pref.getString(getResources().getString(R.string.mail_ucenik),
 				"");
+
+		opcije = this.getActivity().getSharedPreferences("OPTIONS",
+				Context.MODE_PRIVATE);
+
+		String dohvatiIzBaze = opcije.getString("pamti_izracun", "false");
+		if (dohvatiIzBaze.equals("true")) {
+			// uèitati iz baze
+			List<DBInteres> popisIzBaze = DBInteres.dohvatiSve();
+			odabraniInteresiLista.clear();
+			for (DBInteres dbInteres : popisIzBaze) {
+				odabraniInteresiLista.add(new InteresModel(dbInteres
+						.getIdInteresa(), dbInteres.getNaziv()));
+			}
+			interesiAdapter = new ArrayAdapter<InteresModel>(getActivity(),
+					android.R.layout.simple_list_item_1, odabraniInteresiLista);
+			ls_odabrani_interesi.setAdapter(interesiAdapter);
+		}
 
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
@@ -71,7 +100,7 @@ public class OdabraniInteresiTabFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				SendInterese();
+				posaljiInterese();
 				ProgressDialog pd = new ProgressDialog(getActivity());
 				pd.setMessage(getResources().getString(
 						R.string.msg_rezultat_fakulteta));
@@ -93,22 +122,54 @@ public class OdabraniInteresiTabFragment extends Fragment {
 		return view;
 	}
 
+	/**
+	 * Dohvat odabranih interesa i njihovo spremanje u lokalnu bazu
+	 * 
+	 * @param data
+	 *            Lista objekata tipa InteresModel
+	 */
 	public void receiveData(ArrayList<InteresModel> data) {
 
-		list.clear();
-		list = data;
-		adapter = new ArrayAdapter<InteresModel>(getActivity(),
-				android.R.layout.simple_list_item_1, list);
-		list_osobni_int.setAdapter(adapter);
+		odabraniInteresiLista.clear();
+		odabraniInteresiLista = data;
+		interesiAdapter = new ArrayAdapter<InteresModel>(getActivity(),
+				android.R.layout.simple_list_item_1, odabraniInteresiLista);
+		ls_odabrani_interesi.setAdapter(interesiAdapter);
+
+		String spremiUBazu = opcije.getString("pamti_izracun", "false");
+		if (spremiUBazu.equals("true")) {
+			// spremi u bazu
+			ActiveAndroid.beginTransaction();
+			try {
+				new Delete().from(DBInteres.class).execute();
+				for (InteresModel interes : odabraniInteresiLista) {
+
+					DBInteres dbInteres = new DBInteres(interes.getId(),
+							interes.getNaziv());
+					dbInteres.save();
+				}
+				ActiveAndroid.setTransactionSuccessful();
+
+			} catch (Exception e) {
+				// TODO: handle exception
+			} finally {
+				ActiveAndroid.endTransaction();
+			}
+
+		}
 	}
 
-	private void SendInterese() {
+	/**
+	 * Dohvaæanje podataka o fakultetu i njihovo proslijeðivanje fragmentu
+	 * RezultatiInteresaTabFragment
+	 */
+	private void posaljiInterese() {
 		try {
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpPost httpPost = new HttpPost(this.url);
 
 			ArrayList<Integer> temp = new ArrayList<Integer>();
-			for (InteresModel i : list) {
+			for (InteresModel i : odabraniInteresiLista) {
 				temp.add(i.getId());
 			}
 
@@ -138,16 +199,16 @@ public class OdabraniInteresiTabFragment extends Fragment {
 
 				for (int i = 0; i < jsArrayPoslano.length(); i++) {
 					JSONObject jso = (JSONObject) jsArrayPoslano.get(i);
-					fm = new FakultetModel();
-					fm.setNaziv(jso.getString("nazivFakulteta"));
-					fm.setPostotak(jso.getString("postotak"));
-					fm.setUrl(jso.getString("url"));
-					listaFM.add(fm);
+					fakultetiModel = new FakultetModel();
+					fakultetiModel.setNaziv(jso.getString("nazivFakulteta"));
+					fakultetiModel.setPostotak(jso.getString("postotak"));
+					fakultetiModel.setUrl(jso.getString("url"));
+					dohvaceniFakultetiLista.add(fakultetiModel);
 
 				}
 			}
 
-			com2.SendData2(listaFM);
+			com2.SendData2(dohvaceniFakultetiLista);
 			Log.d("Http Post Response:", responseString.toString());
 
 		} catch (Exception e) {

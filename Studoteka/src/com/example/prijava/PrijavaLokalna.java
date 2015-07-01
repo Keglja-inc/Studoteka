@@ -8,10 +8,17 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-import com.example.modeli.UcenikModel;
-
 import android.util.Log;
 
+import com.example.modeli.UcenikModel;
+
+/**
+ * Klasa koja implementira suèelje i implementira funkcionalnost prijave
+ * korisnika
+ * 
+ * @author Ivan
+ *
+ */
 public class PrijavaLokalna implements PrijavaSucelje {
 
 	private String email, password, url;
@@ -23,6 +30,10 @@ public class PrijavaLokalna implements PrijavaSucelje {
 		this.url = url;
 	}
 
+	/**
+	 * Implementacija suèelja za dohvat podataka o uèeniku kod prijave na
+	 * temelju emaila i lozinke
+	 */
 	@Override
 	public UcenikModel prijava() {
 		try {
@@ -59,7 +70,7 @@ public class PrijavaLokalna implements PrijavaSucelje {
 			JSONObject jo = new JSONObject(responseString.toString());
 
 			if (jo.get("status").equals(true)) {
-				JSONObject temp = (JSONObject) jo.get("podaci"); 
+				JSONObject temp = (JSONObject) jo.get("podaci");
 				UcenikModel uModel = new UcenikModel();
 				uModel.setId(temp.getInt("idUcenika"));
 				uModel.setIme(temp.getString("ime"));

@@ -36,16 +36,22 @@ import com.example.studoteka.GoogleMapAktivnost;
 import com.example.studoteka.R;
 import com.example.volley.AppController;
 
+/**
+ * Klasa u kojoj je definirana funkcionalnost dohvata liste fakulteta te je
+ * definirana povezanost s pripadnim layoutom
+ * 
+ * @author Ivan
+ *
+ */
 public class FakultetiFragment extends Fragment {
 
 	private View view;
-	private FakultetModel model;
-	private List<FakultetModel> fakulteti = new ArrayList<FakultetModel>();
-	private List<FakultetModel> url_fakulteti = new ArrayList<FakultetModel>();
-	private ArrayAdapter<FakultetModel> adapter;
-	private ListView lv;
-	private EditText inputSearch;
-	private SwipeRefreshLayout refreshLayout;
+	private FakultetModel fakultetiModel;
+	private List<FakultetModel> fakultetiLista = new ArrayList<FakultetModel>();
+	private ArrayAdapter<FakultetModel> fakultetiAdapter;
+	private ListView ls_fakulteti;
+	private EditText edt_input_search;
+	private SwipeRefreshLayout srl_refresh_layout;
 	public static final String url = "http://46.101.185.15//rest/cfddc7067c795d46f676c358dc6aacfcd20c195c";
 
 	@Override
@@ -53,19 +59,20 @@ public class FakultetiFragment extends Fragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		view = inflater.inflate(R.layout.fakulteti_fragment, container, false);
-		lv = (ListView) view.findViewById(R.id.fakulteti_lista);
-		inputSearch = (EditText) view.findViewById(R.id.edt_inputSearch);
-		refreshLayout = (SwipeRefreshLayout) view
+		ls_fakulteti = (ListView) view.findViewById(R.id.fakulteti_lista);
+		edt_input_search = (EditText) view.findViewById(R.id.edt_inputSearch);
+		srl_refresh_layout = (SwipeRefreshLayout) view
 				.findViewById(R.id.swipe_refresh);
-		refreshLayout.setColorSchemeResources(android.R.color.background_dark,
-				android.R.color.holo_purple, android.R.color.holo_blue_bright,
+		srl_refresh_layout.setColorSchemeResources(
+				android.R.color.background_dark, android.R.color.holo_purple,
+				android.R.color.holo_blue_bright,
 				android.R.color.holo_green_light);
 
-		adapter = new ArrayAdapter<FakultetModel>(getActivity(),
+		fakultetiAdapter = new ArrayAdapter<FakultetModel>(getActivity(),
 				android.R.layout.simple_list_item_1, prepareListData());
-		lv.setAdapter(adapter);
+		ls_fakulteti.setAdapter(fakultetiAdapter);
 
-		lv.setOnItemClickListener(new OnItemClickListener() {
+		ls_fakulteti.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -81,9 +88,11 @@ public class FakultetiFragment extends Fragment {
 			}
 		});
 
-		// rerfresh dela jedino ak je vidljiv prvi fakultet u listi jer bi inaèe
-		// refrešal kad god potegneš prema dolje
-		lv.setOnScrollListener(new OnScrollListener() {
+		/**
+		 * rerfresh dela jedino ak je vidljiv prvi fakultet u listi jer bi inaèe
+		 * refrešal kad god potegneš prema dolje
+		 */
+		ls_fakulteti.setOnScrollListener(new OnScrollListener() {
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -96,14 +105,16 @@ public class FakultetiFragment extends Fragment {
 					int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
 				if (firstVisibleItem == 0)
-					refreshLayout.setEnabled(true);
+					srl_refresh_layout.setEnabled(true);
 				else
-					refreshLayout.setEnabled(false);
+					srl_refresh_layout.setEnabled(false);
 			}
 		});
 
-		// složeni refresh fakulteta
-		refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+		/**
+		 * Funkcionalan refresh fakulteta
+		 */
+		srl_refresh_layout.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
 			public void onRefresh() {
@@ -113,15 +124,17 @@ public class FakultetiFragment extends Fragment {
 			}
 		});
 
-		// pretraživanje fakulteta
-		inputSearch.addTextChangedListener(new TextWatcher() {
+		/**
+		 * pretraživanje fakulteta
+		 */
+		edt_input_search.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				// TODO Auto-generated method stub
-				((Filterable) FakultetiFragment.this.adapter).getFilter()
-						.filter(s);
+				((Filterable) FakultetiFragment.this.fakultetiAdapter)
+						.getFilter().filter(s);
 			}
 
 			@Override
@@ -141,6 +154,11 @@ public class FakultetiFragment extends Fragment {
 		return view;
 	}
 
+	/**
+	 * Dohvaæa listu fakulteta prema proslijeðenom url - u
+	 * 
+	 * @return
+	 */
 	private List<FakultetModel> prepareListData() {
 
 		JsonObjectRequest objRq = new JsonObjectRequest(Method.GET, url, null,
@@ -157,10 +175,10 @@ public class FakultetiFragment extends Fragment {
 										.get(i);
 								String naziv = jsObject.getString("naziv");
 								String url = jsObject.getString("url");
-								model = new FakultetModel();
-								model.setNaziv(naziv);
-								model.SetUrl(url);
-								fakulteti.add(model);
+								fakultetiModel = new FakultetModel();
+								fakultetiModel.setNaziv(naziv);
+								fakultetiModel.SetUrl(url);
+								fakultetiLista.add(fakultetiModel);
 
 							}
 
@@ -168,7 +186,7 @@ public class FakultetiFragment extends Fragment {
 							// TODO: handle exception
 							e.printStackTrace();
 						}
-						adapter.notifyDataSetChanged();
+						fakultetiAdapter.notifyDataSetChanged();
 					}
 				}, new ErrorListener() {
 
@@ -179,6 +197,6 @@ public class FakultetiFragment extends Fragment {
 					}
 				});
 		AppController.getInstance().addToRequestQueue(objRq);
-		return fakulteti;
+		return fakultetiLista;
 	}
 }

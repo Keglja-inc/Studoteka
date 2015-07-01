@@ -8,6 +8,11 @@ import com.example.tabovi.InteresiTabFragment;
 import com.example.tabovi.OdabraniInteresiTabFragment;
 import com.example.tabovi.RezultatInteresaTabFragment;
 
+/**
+ * Adapter kojim definiramo prikaz fragmenata u tab layoutu
+ * @author Ivan
+ *
+ */
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 	public TabsPagerAdapter(FragmentManager fm) {
 		super(fm);

@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.studoteka.R;
-import com.example.studoteka.R.id;
-import com.example.studoteka.R.layout;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -21,6 +19,13 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+/**
+ * Klasa u kojoj je implementirana funkcionalnost prijave putem Facebooka te je
+ * definirana povezanost s pripadnim layoutom
+ * 
+ * @author Ivan
+ *
+ */
 public class FacebookPrijavaFragment extends android.support.v4.app.Fragment {
 
 	private LoginButton mButtonLogin;
@@ -28,7 +33,8 @@ public class FacebookPrijavaFragment extends android.support.v4.app.Fragment {
 	private CallbackManager mCallbackManager;
 	private AccessTokenTracker mTokenTracker;
 	private ProfileTracker mProfileTracker;
-	private FacebookCallback<LoginResult> mFacebookCallback; 
+
+	// private FacebookCallback<LoginResult> mFacebookCallback;
 
 	public FacebookPrijavaFragment() {
 		// TODO Auto-generated constructor stub
@@ -78,6 +84,11 @@ public class FacebookPrijavaFragment extends android.support.v4.app.Fragment {
 		mCallbackManager.onActivityResult(requestCode, resultCode, data);
 	}
 
+	/**
+	 * Dodjeljuje view priloženome elementu iz layouta
+	 * 
+	 * @param view
+	 */
 	private void setupTextDetails(View view) {
 		mTextDetails = (TextView) view.findViewById(R.id.text_details);
 	}
@@ -104,35 +115,36 @@ public class FacebookPrijavaFragment extends android.support.v4.app.Fragment {
 	}
 
 	private void setupLoginButton(View view) {
-		mButtonLogin = (LoginButton) view
-				.findViewById(R.id.login_button);
+		mButtonLogin = (LoginButton) view.findViewById(R.id.login_button);
 		mButtonLogin.setFragment(this);
 		// if (Build.VERSION.SDK_INT >= 16)
 		// mButtonLogin.setBackground(null);
 		// else
 		// mButtonLogin.setBackgroundDrawable(null);
 		mButtonLogin.setCompoundDrawables(null, null, null, null);
-	
-		mButtonLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-			@Override
-			public void onSuccess(LoginResult loginResult) {
-				Log.d("VIVZ", "onSuccess");
-				AccessToken accessToken = loginResult.getAccessToken();
-				Profile profile = Profile.getCurrentProfile();
-				mTextDetails.setText(constructWelcomeMessage(profile));
 
-			}
+		mButtonLogin.registerCallback(mCallbackManager,
+				new FacebookCallback<LoginResult>() {
+					@Override
+					public void onSuccess(LoginResult loginResult) {
+						Log.d("VIVZ", "onSuccess");
+						// AccessToken accessToken =
+						// loginResult.getAccessToken();
+						Profile profile = Profile.getCurrentProfile();
+						mTextDetails.setText(constructWelcomeMessage(profile));
 
-			@Override
-			public void onCancel() {
-				Log.d("VIVZ", "onCancel");
-			}
+					}
 
-			@Override
-			public void onError(FacebookException e) {
-				Log.d("VIVZ", "onError " + e);
-			}
-		});
+					@Override
+					public void onCancel() {
+						Log.d("VIVZ", "onCancel");
+					}
+
+					@Override
+					public void onError(FacebookException e) {
+						Log.d("VIVZ", "onError " + e);
+					}
+				});
 		Log.d("VIVZ", "" + "KREIRAL SAM LOGIN BUTTON");
 	}
 

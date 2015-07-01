@@ -85,6 +85,7 @@
     <string name="msg_odabrani_interesi">Odabrane interese možete pregledati na sljedećem tabu.....</string>
     <string name="msg_rezultat_fakulteta">Popis fakulteta po odabranim interesima možete vidjeti na sljedećem tabu.....</string>
     <string name="msg_azuriranje_greska">Neočekivana pogreška kod ažuriranja!.....</string>
+    <string name="msg_nepodudarnost_lozinka">Lozinke se ne podudaraju</string>
     
     <!-- stringovi za settings fragment -->
     <string name="sett_korisnicki_podaci_summary">Želite li da se pamte korisnički podaci kod sljedeće prijave</string>

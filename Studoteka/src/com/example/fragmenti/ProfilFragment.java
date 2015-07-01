@@ -23,14 +23,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.studoteka.PrijavaAktivnost;
 import com.example.studoteka.R;
 
+/**
+ * Klasa u kojoj su definirane funkcionalnosti dohvaæanja, prikaza i ažuriranja
+ * profila korisnika te je definirana povezanost s pripadnim layoutom
+ * 
+ * @author Ivan
+ *
+ */
 public class ProfilFragment extends Fragment {
 	private View view;
-	private TextView txt_ucenik_id, txt_vrijednost_id;
+	private TextView txt_vrijednost_id;
 	private EditText edt_ime, edt_prezime, edt_mail_adress, edt_lozinka,
 			edt_potvrda_lozinke;
 	private Button btn_azuriraj;
@@ -43,7 +48,6 @@ public class ProfilFragment extends Fragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		view = inflater.inflate(R.layout.profil_fragment, container, false);
-		txt_ucenik_id = (TextView) view.findViewById(R.id.txt_ucenik_id);
 		txt_vrijednost_id = (TextView) view
 				.findViewById(R.id.txt_vrijednost_id);
 		edt_ime = (EditText) view.findViewById(R.id.edt_ime);
@@ -54,26 +58,26 @@ public class ProfilFragment extends Fragment {
 				.findViewById(R.id.edt_potvrda_lozinke);
 		btn_azuriraj = (Button) view.findViewById(R.id.btn_azuriraj);
 		dohvatiPreferences();
-		
+
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 					.permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 		}
-		
+
 		btn_azuriraj.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				String odg = postaviPreferences();
 				ProgressDialog pd = new ProgressDialog(getActivity());
 				String poruka = "";
-				if (odg != null){
+				if (odg != null) {
 					poruka = odg;
-				}
-				else{
-					poruka = getResources().getString(R.string.msg_azuriranje_greska);
+				} else {
+					poruka = getResources().getString(
+							R.string.msg_azuriranje_greska);
 				}
 				pd.setMessage(poruka);
 				pd.setCancelable(true);
@@ -84,21 +88,34 @@ public class ProfilFragment extends Fragment {
 		return view;
 	}
 
+	/**
+	 * Dohvaæa podatke o uèeniku iz spremljenih preferenci i postavlja
+	 * vrijednosti objekta tipa UcenikModel u definirane elemente tipa EditText
+	 */
 	public void dohvatiPreferences() {
-		SharedPreferences djeljenePostavke = getActivity().getSharedPreferences("UCENIK", Context.MODE_PRIVATE);
-		idUcenik = djeljenePostavke.getInt(getResources().getString(R.string.id_ucenik), -1);
-		imeUcenik = djeljenePostavke.getString(getResources().getString(R.string.ime_ucenik), "");
-		prezimeUcenik = djeljenePostavke.getString(getResources().getString(R.string.prezime_ucenik), "");
-		mailUcenik = djeljenePostavke.getString(getResources().getString(R.string.mail_ucenik), "");
-		
-		txt_vrijednost_id.setText((CharSequence)String.valueOf(idUcenik));
-		edt_ime.setText((CharSequence)imeUcenik);
-		edt_prezime.setText((CharSequence)prezimeUcenik);
-		edt_mail_adress.setText((CharSequence)mailUcenik);
+		SharedPreferences djeljenePostavke = getActivity()
+				.getSharedPreferences("UCENIK", Context.MODE_PRIVATE);
+		idUcenik = djeljenePostavke.getInt(
+				getResources().getString(R.string.id_ucenik), -1);
+		imeUcenik = djeljenePostavke.getString(
+				getResources().getString(R.string.ime_ucenik), "");
+		prezimeUcenik = djeljenePostavke.getString(
+				getResources().getString(R.string.prezime_ucenik), "");
+		mailUcenik = djeljenePostavke.getString(
+				getResources().getString(R.string.mail_ucenik), "");
 
+		txt_vrijednost_id.setText((CharSequence) String.valueOf(idUcenik));
+		edt_ime.setText((CharSequence) imeUcenik);
+		edt_prezime.setText((CharSequence) prezimeUcenik);
+		edt_mail_adress.setText((CharSequence) mailUcenik);
 
 	}
-	
+
+	/**
+	 * Dohvaæa podatke o uèeniku i postavlja njihove vrijednosti preference
+	 * 
+	 * @return
+	 */
 	public String postaviPreferences() {
 		try {
 			// create HttpClient
@@ -116,7 +133,8 @@ public class ProfilFragment extends Fragment {
 			jsonObject.accumulate("prezime", edt_prezime.getText());
 			jsonObject.accumulate("email", edt_mail_adress.getText());
 			jsonObject.accumulate("lozinka", edt_lozinka.getText());
-			jsonObject.accumulate("ponovljenaLozinka", edt_potvrda_lozinke.getText());
+			jsonObject.accumulate("ponovljenaLozinka",
+					edt_potvrda_lozinke.getText());
 
 			// convert JSONObject to JSON to String
 			json = jsonObject.toString();
@@ -138,21 +156,21 @@ public class ProfilFragment extends Fragment {
 			JSONObject jo = new JSONObject(responseString.toString());
 
 			if (jo.get("status").equals(true)) {
-				
-				
-				SharedPreferences preferences = getActivity().getSharedPreferences(
-						"UCENIK",
-						Context.MODE_PRIVATE);
+
+				SharedPreferences preferences = getActivity()
+						.getSharedPreferences("UCENIK", Context.MODE_PRIVATE);
 				Editor editor = preferences.edit();
 				editor.putString("ime_ucenik", edt_ime.getText().toString());
-				editor.putString("prezime_ucenik", edt_prezime.getText().toString());
-				editor.putString("mail_ucenik", edt_mail_adress.getText().toString());
-				editor.putString("lozinka_ucenik", edt_lozinka.getText().toString());
-				
+				editor.putString("prezime_ucenik", edt_prezime.getText()
+						.toString());
+				editor.putString("mail_ucenik", edt_mail_adress.getText()
+						.toString());
+				editor.putString("lozinka_ucenik", edt_lozinka.getText()
+						.toString());
+
 				editor.commit();
 				return jo.getString("message").toString();
-			}
-			else {
+			} else {
 				return jo.getString("message").toString();
 			}
 
@@ -162,5 +180,3 @@ public class ProfilFragment extends Fragment {
 		return null;
 	}
 }
-
-

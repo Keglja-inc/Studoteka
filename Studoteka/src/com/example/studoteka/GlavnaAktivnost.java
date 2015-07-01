@@ -26,16 +26,22 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.activeandroid.ActiveAndroid;
+import com.example.adapteri.CustomDrawerRowAdapter;
 import com.example.fragmenti.AboutUs;
 import com.example.fragmenti.AnimacijaFragment;
 import com.example.fragmenti.FakultetiFragment;
 import com.example.fragmenti.LogOutFragment;
 import com.example.fragmenti.ProfilFragment;
-import com.example.fragmenti.RssFragment;
 import com.example.fragmenti.SettingsFragment;
 import com.example.tabovi.TabsInteresiAktivnost;
-import com.example.adapteri.CustomDrawerRowAdapter;
 
+/**
+ * Klasa u kojoj je implementirana funkcionalnost navigacijske ladice
+ * 
+ * @author Ivan
+ *
+ */
 public class GlavnaAktivnost extends ActionBarActivity implements
 		OnItemClickListener {
 	private DrawerLayout drawerLayout;
@@ -48,6 +54,7 @@ public class GlavnaAktivnost extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		ActiveAndroid.initialize(this);
 
 		AnimacijaFragment a = new AnimacijaFragment();
 		FragmentManager frgManager = getFragmentManager();
@@ -137,7 +144,9 @@ public class GlavnaAktivnost extends ActionBarActivity implements
 		Fragment fragment = null;
 		switch (position) {
 		case 0:
-			fragment = new RssFragment();
+			com.rss.RssFragment rssFragment = new com.rss.RssFragment(
+					"http://www.mojamatura.net/index.php?format=feed&type=rss");
+			fragment = rssFragment;
 			break;
 		case 1:
 			Intent i2 = new Intent(this, TabsInteresiAktivnost.class);
@@ -151,11 +160,14 @@ public class GlavnaAktivnost extends ActionBarActivity implements
 			fragment = new ProfilFragment();
 			break;
 		case 4:
-			fragment = new AboutUs();break;
+			fragment = new AboutUs();
+			break;
 		case 5:
-			fragment = new SettingsFragment();break;
+			fragment = new SettingsFragment();
+			break;
 		case 6:
-			fragment = new LogOutFragment();break;
+			fragment = new LogOutFragment();
+			break;
 		default:
 			break;
 		}
@@ -199,6 +211,15 @@ public class GlavnaAktivnost extends ActionBarActivity implements
 	}
 
 	@Override
+	public void onBackPressed() {
+		moveTaskToBack(true);
+		android.os.Process.killProcess(android.os.Process.myPid());
+		System.exit(1);
+		super.onBackPressed();
+
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
@@ -206,6 +227,12 @@ public class GlavnaAktivnost extends ActionBarActivity implements
 
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			SettingsFragment fragment = new SettingsFragment();
+			FragmentManager frgManager = getFragmentManager();
+			frgManager.beginTransaction()
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+					.addToBackStack(null).replace(R.id.main_content, fragment)
+					.commit();
 			return true;
 		}
 
@@ -219,6 +246,13 @@ public class GlavnaAktivnost extends ActionBarActivity implements
 
 	// --------------------------------------------------------------------------------------------------------------------
 	// funkcije za facebook integraciju
+	/**
+	 * Vraæa KeyHash aplikacije za registraciju aplikacije za implementaciju
+	 * Facebook prijave
+	 * 
+	 * @param context
+	 * @return
+	 */
 	public static String printKeyHash(Activity context) {
 		PackageInfo packageInfo;
 		String key = null;

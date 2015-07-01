@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.widget.ListView;
 
 import com.example.adapteri.TabsPagerAdapter;
 import com.example.modeli.FakultetModel;
@@ -18,14 +17,20 @@ import com.example.modeli.InteresModel;
 import com.example.studoteka.R;
 import com.example.sucelja.TabSucelje;
 
-public class TabsInteresiAktivnost extends FragmentActivity implements TabListener,
-		TabSucelje {
+/**
+ * Klasa u kojoj je implementiran layout za aktivnost u kojoj su implementirani
+ * definirani tab fragmenti
+ * 
+ * @author Ivan
+ *
+ */
+public class TabsInteresiAktivnost extends FragmentActivity implements
+		TabListener, TabSucelje {
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 
 	private String[] tabs = { "Interesi", "Odabrani", "Rezultat" };
-	private ListView lista;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -34,7 +39,6 @@ public class TabsInteresiAktivnost extends FragmentActivity implements TabListen
 		setContentView(R.layout.layout_za_tabove_test);
 
 		viewPager = (ViewPager) findViewById(R.id.pager);
-		lista = (ListView) findViewById(R.id.list_osobni_interesi);
 		actionBar = getActionBar();
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
@@ -89,6 +93,9 @@ public class TabsInteresiAktivnost extends FragmentActivity implements TabListen
 
 	}
 
+	/**
+	 * Implementacija suèelja za prijenos podataka iz prvog taba u drugi
+	 */
 	@Override
 	public void SendData(ArrayList<InteresModel> data) {
 		// TODO Auto-generated method stub
@@ -98,6 +105,9 @@ public class TabsInteresiAktivnost extends FragmentActivity implements TabListen
 		oi.receiveData(data);
 	}
 
+	/**
+	 * Implementacija suèelja za prijenos podataka iz drugog taba u treæi
+	 */
 	@Override
 	public void SendData2(ArrayList<FakultetModel> data) {
 		// TODO Auto-generated method stub

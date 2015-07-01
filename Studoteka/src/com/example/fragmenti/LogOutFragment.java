@@ -16,6 +16,13 @@ import com.example.studoteka.GlavnaAktivnost;
 import com.example.studoteka.OdabirPrijaveAktivnost;
 import com.example.studoteka.R;
 
+/**
+ * Klasa u kojoj je definirana funkcionalnost fragmenta Odjava te je definirana
+ * povezanost s pripadnim layoutom
+ * 
+ * @author Deni
+ *
+ */
 public class LogOutFragment extends Fragment {
 
 	View view;
